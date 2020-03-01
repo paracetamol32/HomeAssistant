@@ -9,6 +9,7 @@
 !appdaemon
 !www
 !python_scripts
+!appdaemon/apps
 # Ignore folders.
 .storage
 .cloud
