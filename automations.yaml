@@ -1,0 +1,515 @@
+- alias: '[Alarme] Boolean Sirène en sourdine'
+  initial_state: true
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sourdine_sirenes_gateway
+    to: 'on'
+  action:
+  - service: xiaomi_aqara.stop_ringtone
+    data:
+      gw_mac: 78:11:DC:FD:6C:6F
+  - service: script.turn_on
+    entity_id: script.sourdine_sirene
+  id: 2db1530761d54d7587638889bfd63f4e
+
+
+- alias: '[Alarme] Boolean Sirène son activé'
+  initial_state: true
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sourdine_sirenes_gateway
+    to: 'off'
+  action:
+  - service: script.turn_on
+    entity_id: script.activer_son_sirene
+  id: 892cb4c4056240ff9d04314ca59049ac
+
+
+
+- alias: '[Présence] Alerte Pushbullet Fenetre Ouverte'
+  initial_state: 'on'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.door_window_sensor_158d0002d465c3
+    from: 'off'
+    to: 'on'
+  action:
+  - service: notify.pushbullhome
+    data:
+      title: Alerte! Alerte!
+      message: La fenetre vient de s'ouvrir!
+  - service: notify.pushbullflo
+    data:
+      title: Alerte! Alerte!
+      message: La fenetre vient de s'ouvrir!
+  id: ee24caeb70514ca195b4e519439127cc
+  
+   ############################################################
+   ##                       AUTOMATIONS                      ##
+   ############################################################
+- alias: Déclencher alarme
+  trigger:
+   
+    - entity_id: binary_sensor.door_window_sensor_158d0002d465c3
+      platform: state
+      to: 'on'
+    - entity_id: binary_sensor.door_window_sensor_158d0002130008
+      platform: state
+      to: 'on'
+    - entity_id: binary_sensor.motion_sensor_158d0002042736
+      platform: state
+      from: 'off'
+      to: 'on'
+    - entity_id: binary_sensor.motion_sensor_158d000204273
+      platform: state
+      from: 'off'
+      to: 'on'
+    - entity_id: binary_sensor.motion_sensor_158d0001aeb78b
+      platform: state
+      from: 'off'
+      to: 'on'
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: alarm_control_panel.maison
+      state: armed_away
+    - condition: state
+      entity_id: alarm_control_panel.maison
+      state: armed_home
+  action:
+    service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.maison
+  id: 8cdeb941ebfa40b192e82a134e53a3f1
+  
+  
+  
+- alias: '[Alarme] Enclenchée absent'
+  initial_state: 'on'
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.maison
+    to: armed_away
+  action:
+  - service: notify.pushbullhome
+    data:
+      message: Alarme Enclenchée (absent)
+  id: ebb1960420cd4086946c171602db93af
+  
+  
+  
+  
+  
+- alias: '[Alarme] Enclenchée présent'
+  initial_state: 'on'
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.maison
+    to: armed_home
+  action:
+  - service: notify.pushbullhome
+    data:
+      message: Alarme Enclenchée (présent)
+  id: 78c2eaf7930342c997b2dafa1e97e3b0
+  
+  
+  
+  
+  
+- alias: '[Alarme] Déclenchée'
+  initial_state: 'on'
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.maison
+    to: triggered
+  action:
+  - service: script.turn_on
+    entity_id: script.jouer_sirene_boucle
+  - delay:
+      seconds: 0.1
+  - service: notify.pushbullhome
+    data:
+      message: ALARME!!!
+  id: 84ea8459d4b3490bb8286fe4dd61ab21
+  
+  
+  
+  
+- alias: '[Alarme] Désactivée'
+  initial_state: 'on'
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.maison
+    to: disarmed
+  action:
+  - service: notify.pushbullhome
+    data:
+      message: Alarme Désactivée
+  - delay:
+      seconds: 0.1
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.sourdine_sirenes_gateway
+  - delay:
+      seconds: 10
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.sourdine_sirenes_gateway
+ 
+      
+- alias: 'On / Off des Thermostats'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.thermostats_on_off
+  action:
+  - service: climate.set_hvac_mode
+    entity_id: climate.clim_daikin
+    data_template:
+      hvac_mode: >
+        {% if states.input_boolean.thermostats_on_off.state == "on" %}
+          heat
+        {% else %}
+          off
+        {% endif %}
+
+- alias: '[Portail FLO] Ouvert'
+  initial_state: 'off'
+  trigger:
+    platform: state
+    entity_id: switch.portailflo_portail
+    to: 'on'
+  action:
+  - service: notify.pushbullflo
+    data:
+      message: Portail Ouvert!
+
+
+- alias: 'Aspirateur'
+  trigger:
+    platform: state
+    entity_id: group.all_people
+    to: 'not_home'
+  action:
+  - service: vacuum.start
+    entity_id: vacuum.mi_robo
+  - service: notify.pushbullhome
+    data:
+      message: Robert Bosse!
+
+
+- alias: 'Allumage Wall Plug Moto'
+  trigger:
+    platform: time
+    at: '23:00:00'
+  action:
+      service: script.turn_on
+      entity_id: script.allumer_wall_plug
+
+- alias: 'Instinction Wall Plug Moto'
+  trigger:
+    platform: time
+    at: '08:00:00'
+  action:
+      service: script.turn_on
+      entity_id: script.eteindre_wall_plug
+
+   ############################################################
+   ##                 AUTOMATIONS  VOLETS                    ##
+   ############################################################
+- alias: 'Send notification when sun rises'
+  trigger:
+    platform: sun
+    event: sunrise
+    offset: '+00:00:00'
+  action:
+    - service: cover.open_cover
+      entity_id: cover.volet_cuisine_level
+    - service: cover.open_cover
+      entity_id: cover.volet_tv_level
+    - service: cover.open_cover
+      entity_id: cover.volet_salon_level
+    - service: cover.open_cover
+      entity_id: cover.porte_cuisine_level
+    - service: cover.open_cover
+      entity_id: cover.volet_bureau_level
+      
+      
+      
+- alias: 'Send notification when sun sets'
+  trigger:
+    platform: sun
+    event: sunset
+    offset: '+01:00:00'
+  action:
+    - service: cover.close_cover
+      entity_id: cover.volet_cuisine_level
+    - service: cover.close_cover
+      entity_id: cover.volet_tv_level
+    - service: cover.close_cover
+      entity_id: cover.volet_salon_level
+    - service: cover.close_cover
+      entity_id: cover.porte_cuisine_level
+    - service: cover.close_cover
+      entity_id: cover.volet_bureau_level
+  
+  
+  
+- alias: Ouverture Volet Porte Cuisine
+  trigger: 
+    - entity_id: binary_sensor.door_window_sensor_158d0003d4a095
+      platform: state
+      from: 'off'
+      to: 'on'
+  action:
+    - service: cover.open_cover
+      entity_id: cover.porte_cuisine_level  
+    
+   ############################################################
+   ##                 AUTOMATIONS  CLIM   CHAMBRE            ##
+   ############################################################    
+    
+    
+- alias: 'On clim Chambre'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sw_chambre
+  condition:
+    - condition: state
+      entity_id: input_boolean.sw_chambre
+      state: 'on'
+  action:
+    entity_id: climate.chambre
+    service: climate.turn_on
+
+    
+- alias: 'Off clim Chambre'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sw_chambre
+  condition:
+    - condition: state
+      entity_id: input_boolean.sw_chambre
+      state: 'off'
+  action:
+    entity_id: climate.chambre
+    service: climate.turn_off
+  
+
+
+   ############################################################
+   ##                 AUTOMATIONS  CLIM LOLA                 ##
+   ############################################################   
+
+- alias: 'On clim Lola'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sw_lola
+  condition:
+    - condition: state
+      entity_id: input_boolean.sw_lola
+      state: 'on'
+  action:
+    entity_id: climate.lola
+    service: climate.turn_on
+
+    
+- alias: 'Off clim Lola'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sw_lola
+  condition:
+    - condition: state
+      entity_id: input_boolean.sw_lola
+      state: 'off'
+  action:
+    entity_id: climate.lola
+    service: climate.turn_off
+
+
+   ############################################################
+   ##               AUTOMATIONS GEOLOC PORTAIL DOM           ##
+   ############################################################   
+- alias: 'Ouverture Portail Dom Geoloc'
+  trigger:
+    platform: zone
+    entity_id: device_tracker.mi_mix_2
+    zone: zone.home
+    event: enter # or "leave"
+  action:
+  - service: script.turn_on
+    entity_id: script.ouvrir_portail_dom 
+
+   ############################################################
+   ##               AUTOMATIONS BOUTON  PORTAIL DOM          ##
+   ############################################################    
+- alias: 'Ouverture Portail Dom Bouton'
+  trigger:
+    platform: event
+    event_type: xiaomi_aqara.click
+    event_data:
+      entity_id: binary_sensor.switch_158d0002016168
+      click_type: single
+  condition:
+    - condition: state
+      entity_id: cover.portaildom
+      state: 'close'
+  action:
+  - service: script.turn_on
+    entity_id: script.ouvrir_portail_dom 
+
+- alias: 'Fermeture Portail Dom Bouton'
+  trigger:
+    platform: event
+    event_type: xiaomi_aqara.click
+    event_data:
+      entity_id: binary_sensor.switch_158d0002016168
+      click_type: single
+  condition:
+    - condition: state
+      entity_id: cover.portaildom
+      state: 'open'
+  action:
+  - service: script.turn_on
+    entity_id: script.fermer_portail_dom
+
+- alias: 'Fermeture Portail Dom Bouton'
+  trigger:
+    platform: event
+    event_type: xiaomi_aqara.click
+    event_data:
+      entity_id: binary_sensor.switch_158d0002016168
+      click_type: single
+  condition:
+    - condition: state
+      entity_id: cover.portaildom
+      state: 'unknown'
+  action:
+  - service: python_script.set_state
+    data_template:
+     entity_id: cover.portaildom
+     state: close
+
+   ############################################################
+   ##               AUTOMATIONS  PORTAIL FLO                 ##   
+   ############################################################   
+- alias: 'Ouverture Portail Flo'
+  trigger:
+    platform: zone
+    entity_id: device_tracker.redmi_5
+    zone: zone.home
+    # Event is either enter or leave
+    event: enter # or "leave"
+  action:
+  - service: notify.pushbullflo
+    data:
+      message: Arrivée Maison et ouverture portail
+  - service: script.turn_on
+    entity_id: script.ouverture_portail_flo
+
+   ############################################################
+   ##               AUTOMATIONS DIO  PORTAIL FLO          ##
+   ############################################################    
+- alias: 'Ouverture Portail Flo Bouton'
+  trigger:
+     platform: state
+     entity_id:  switch.0b110001011187f601010f70
+  condition:
+     - condition: state
+       entity_id:  switch.0b110001011187f601010f70
+       state: 'on'
+  action:
+   - service: script.turn_on
+     entity_id: script.ouvrir_portail_flo 
+ 
+- alias: 'Fermeture Portail Flo Bouton'
+  trigger:
+     platform: state
+     entity_id:  switch.0b110001011187f601010f70
+  condition:
+     - condition: state
+       entity_id:  switch.0b110001011187f601010f70
+       state: 'off'
+  action:
+   - service: script.turn_on
+     entity_id: script.fermer_portail_flo 
+   ############################################################
+   ##               AUTOMATIONS BOUTON  PORTAIL FLO          ##
+   ############################################################    
+- alias: 'Ouverture Portail Flo DIO'
+  trigger:
+     platform: event
+     event_type: xiaomi_aqara.click
+     event_data:
+       entity_id: binary_sensor.switch_158d0002556a38
+       click_type: single
+  condition:
+     - condition: state
+       entity_id: switch.portailflo_portail
+       state: 'off'
+  action:
+   - service: script.turn_on
+     entity_id: script.ouvrir_portail_flo 
+ 
+- alias: 'Fermeture Portail Flo Bouton'
+  trigger:
+     platform: event
+     event_type: xiaomi_aqara.click
+     event_data:
+       entity_id: binary_sensor.switch_158d0002556a38
+       click_type: single
+  condition:
+     - condition: state
+       entity_id: switch.portailflo_portail
+       state: 'on'
+  action:
+   - service: script.turn_on
+     entity_id: script.fermer_portail_flo
+
+
+
+   ############################################################
+   ##               DIO 4  BOUTON  VOLETS                    ##
+   ############################################################ 
+ 
+- alias: 'Fermeture Volet DIO Bouton 1'
+  trigger:
+     platform: state
+     entity_id: switch.0b110027013e320a01010f70
+  condition:
+     - condition: state
+       entity_id: switch.0b110027013e320a01010f70
+       state: 'off'
+  action:
+  - service: cover.close_cover
+    entity_id: cover.volet_cuisine_level
+  - service: cover.close_cover
+    entity_id: cover.volet_tv_level
+  - service: cover.close_cover
+    entity_id: cover.volet_salon_level
+  - service: cover.close_cover
+    entity_id: cover.porte_cuisine_level
+    #- service: cover.close_cover
+    #  entity_id: cover.volet_bureau_level
+
+- alias: 'Ouverture Volet DIO Bouton 1'
+  trigger:
+       platform: state
+       entity_id: switch.0b110027013e320a01010f70
+  condition:
+       - condition: state
+         entity_id: switch.0b110027013e320a01010f70
+         state: 'on'
+  action:
+    - service: cover.open_cover
+      entity_id: cover.volet_cuisine_level
+    - service: cover.open_cover
+      entity_id: cover.volet_tv_level
+    - service: cover.open_cover
+      entity_id: cover.volet_salon_level
+    - service: cover.open_cover
+      entity_id: cover.porte_cuisine_level
+      #- service: cover.open_cover
+      #  entity_id: cover.volet_bureau_level

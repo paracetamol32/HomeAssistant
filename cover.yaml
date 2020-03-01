@@ -1,0 +1,6 @@
+  - platform: rfxtrx
+    automatic_add: false
+    signal_repetitions: 1 # Très important avec des volets Somfy
+    devices:
+      071a000001020101:
+        name: PortailDom

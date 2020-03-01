@@ -1,0 +1,78 @@
+  - platform: arest
+    resource: http://192.168.32.160
+    monitored_variables:
+      TempEAU:
+       name: temperature_eau
+       unit_of_measurement: '°C'
+      TempAIR:
+       unit_of_measurement: '°C'
+      UVindex:
+       name: UV
+       
+  - platform: arest
+    resource: http://192.168.32.21
+    name: PortailFlo
+    monitored_variables:
+      EtatPortail:
+       name: etatportail
+      
+  - platform: influxdb
+    host: 192.168.132.20
+    queries:
+    - name: TempExt
+      unit_of_measurement: °C
+      group_function: last
+      where: 'time > now() - 5m'
+      measurement: '"httpjson_Lolin32"'
+      field: stats_current_Temp5
+      database: meteo
+
+  - platform: mqtt
+    name: "Power"
+    state_topic: "jeedom/Amp"
+    unit_of_measurement: 'W'
+    value_template: "{{ value_json.Puissance }}"
+  - platform: mqtt
+    name: "TempSalon"
+    state_topic: "jeedom/Tsalon"
+    unit_of_measurement: '°C'
+    value_template: "{{ value_json.Temp }}"
+  - platform: mqtt
+    name: "TempLola"
+    state_topic: "jeedom/Tlola"
+    unit_of_measurement: '°C'
+    value_template: "{{ value_json.Temp }}"
+  - platform: mqtt
+    name: "TempBureau"
+    state_topic: "jeedom/Tbureau"
+    unit_of_measurement: '°C'
+    value_template: "{{ value_json.Temp }}"
+    
+  - platform: mqtt
+    name: "PACTempOut"
+    state_topic: "ESP_PAC/Temp2/TempOut"
+    unit_of_measurement: '°C'
+       
+  - platform: mqtt
+    name: "PACTempIn"
+    state_topic: "ESP_PAC/Temp/TempIn"
+    unit_of_measurement: '°C'
+
+
+  - platform: mitemp_bt
+    rounding: True
+    decimals: 2
+    period: 60
+    log_spikes: False
+    use_median: False
+    active_scan: False
+    hci_interface: 0
+    batt_entities: False
+    
+  - platform: rflink
+    automatic_add: true
+
+
+  - platform: rfxtrx
+    automatic_add: true
+    

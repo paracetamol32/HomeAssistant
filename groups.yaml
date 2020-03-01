@@ -1,0 +1,9 @@
+  all_people:
+    entities:
+      - device_tracker.mi_mix_2
+      - device_tracker.redmi_5
+
+  # Example configuration.yaml entry showing two styles
+
+  Volets_roulants:
+    entities: zwave.volet_cuisine

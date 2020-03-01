@@ -1,0 +1,20 @@
+
+  - platform: arest
+    resource: http://192.168.32.160
+    name: Piscine
+    pins:
+      24:
+        name: Pomp
+      25:
+        name: Polaris
+# Example configuration.yaml entry
+
+  - platform: arest
+    resource: http://192.168.32.21
+    name: PortailFlo
+    pins:
+      4:
+        name: Portail
+
+  - platform: rfxtrx
+    automatic_add: true

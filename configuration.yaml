@@ -1,0 +1,231 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+sensor: !include sensors.yaml
+switch: !include switches.yaml
+shelly: !include shelly.yaml
+climate: !include climate.yaml
+media_player: !include media.yaml
+cover: !include cover.yaml
+homeassistant:
+  customize: !include customize.yaml
+  
+# customizer:
+#   custom_ui: local
+
+# logger:
+#   default: debug
+
+frontend:
+  themes: !include_dir_merge_named themes/
+
+
+vacuum:
+  - platform: miio2
+    host: 192.168.32.89
+    token: !secret vaccum_token
+    name: Mi Robo
+
+# You can leave MAC empty if you only have one gateway.
+xiaomi_aqara:
+  discovery_retry: 5
+  gateways:
+    - key: !secret xiaomi_key
+    
+# Example configuration.yaml entry
+
+influxdb:
+  host: 192.168.132.20
+
+
+#sensor:
+
+mqtt:
+  broker: 192.168.32.90
+  discovery: true
+  port: 1883
+  client_id: home-assistant
+  keepalive: 60
+
+
+
+   ############################################################
+   ##                      INPUT_SELECT                      ##
+   ############################################################
+
+### Input select pour choisir le son a jouer ###
+input_select:
+  sirenes_gateway:    
+    name: Sirènes
+    options: 
+      - "0 - Police car 1"
+      - "1 - Police car 2"
+      - "2 - Accident"
+      - "3 - Countdown"
+      - "4 - Ghost"
+      - "5 - Sniper rifle"
+      - "6 - Battle"
+      - "7 - Air raid"
+      - "8 - Bark"
+  #    - "9 - None"
+      - "10 - Doorbell"
+      - "11 - Knock at a door"
+      - "12 - Amuse"
+      - "13 - Alarm clock"
+  #    - "14 - None"
+  #    - "15 - None"
+  #    - "16 - None"
+  #    - "17 - None"
+  #    - "18 - None"
+  #    - "19 - None"
+      - "20 - MiMix"
+      - "21 - Enthusiastic"
+      - "22 - GuitarClassic"
+      - "23 - IceWorldPiano"
+      - "24 - LeisureTime"
+      - "25 - ChildHood"
+      - "26 - MorningStreamLiet"
+      - "27 - MusicBox"
+      - "28 - Orange"
+      - "29 - Thinker"
+    initial: "1 - Police car 2"    
+    icon: mdi:alarm-bell 
+  chauffage:
+    name: Etats du Chauffage
+    icon: mdi:home-minus
+    options:
+     - Normal
+     - Diner
+     - Week-End
+     - Abscent
+
+
+   ############################################################
+   ##                      INPUT_BOOLEAN                     ##
+   ############################################################
+
+### Input boolean pour couper le son du gateway ###
+input_boolean:
+  sourdine_sirenes_gateway:
+    name: Muet
+    icon: mdi:volume-off
+  presence_lola:
+    name: Présence Lola
+    initial: off
+    icon: mdi:account-switch
+  presence_flo:
+    name: Présence Flo
+    initial: off
+  presence_dom:
+     name: Présence Dom
+     initial: off
+     icon: mdi:account-switch
+  thermostats_on_off:
+    name: Chauffage On / Off
+    initial: off
+    icon: mdi:thermostat-box
+  sw_chambre:
+    name: SW Chauffage On / Off
+    initial: off
+    icon: mdi:thermostat-box
+  sw_lola:
+    initial: off
+    icon: mdi:thermostat-box
+  sw_bureau:
+    initial: off
+    icon: mdi:thermostat-box
+  sw_test:
+    initial: off
+    
+   ############################################################
+   ##                     INPUT_NUMBER                       ##
+   ############################################################
+
+### Input slider pour controler le volume du gateway ###
+input_number:
+  gateway_volume:
+    name: Volume
+    initial: 1
+    min: 0
+    max: 100
+    step: 1
+    icon: mdi:volume-high
+### Input slider pour controler le delai de la boucle ###
+  delai_boucle:
+    name: "Délai boucle"
+    initial: 1
+    min: 0
+    max: 15
+    step: 1
+    icon: mdi:loop
+
+
+   ############################################################
+   ##                       PUSHBULLET                       ##
+   ############################################################
+# Example configuration.yaml entry
+notify:
+  - name: pushbullhome
+    platform: pushbullet
+    api_key: !secret pushbullhome_key
+  - name: pushbullflo
+    platform: pushbullet
+    api_key: !secret pushbullflo_key
+
+
+
+   ############################################################
+   ##              MANUAL ALARM CONTROL PANEL                ##
+   ############################################################
+
+alarm_control_panel:
+  - platform: manual
+    name: Maison
+    code: 1234
+    pending_time: 0
+    delay_time: 20
+    trigger_time: 4
+    disarmed:
+      trigger_time: 0
+    armed_home:
+      pending_time: 0
+      delay_time: 0  
+    armed_away:
+      pending_time: 0
+      delay_time: 0   
+
+zwave:
+  usb_path: /dev/ttyACM0
+  device_config: !include zwave_device_config.yaml
+
+
+rflink:
+  port: /dev/ttyUSB0
+
+rfxtrx:
+  device: /dev/ttyUSB1
+  debug: 1
+binary_sensor:
+  platform: rfxtrx
+  automatic_add: false
+  
+# Example configuration.yaml entry
+google:
+  client_id: !secret google_id
+  client_secret: !secret google_secret  
+
+python_script:
+
+logger:
+  default: warning
+  logs:
+    xiaomi_aqara: debug

@@ -1,0 +1,38 @@
+sensor.mi_t_582d3434930d:
+  friendly_name: mi Temp Bureau
+sensor.mi_t_582d34348637:
+  friendly_name: mi Temp Salon
+sensor.mi_h_582d34348637:
+  friendly_name: mi Humidité Salon
+sensor.mi_t_582d34350d67:
+  friendly_name: mi Temp Lola
+sensor.mi_t_4c65a8de3abb:
+  friendly_name: mi Temp Chambre
+light.bed_light:
+  icon_color: green
+cover.volet_cuisine_level:
+  custom_ui_state_card: state-card-custom-ui
+  state_card_mode: break-slider-toggle
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+  theme: happy
+  confirm_controls_show_lock: true
+  slider_theme:
+    min: 10
+    max: 200
+    pin: true
+    off_when_min: false
+    report_when_not_changed: false
+cover.portaildom:
+  assumed_state: false
+binary_sensor.0b11007c013e320a01000070:
+  friendly_name: DIO4BT1
+binary_sensor.0b11007e013e320a02000070:
+  friendly_name: DIO4-BT2
+binary_sensor.0b110080013e320a03010f70:
+  friendly_name: DIO4-BT3
+binary_sensor.door_window_sensor_158d0002bfc4f8:
+  window_room: lola
+binary_sensor.door_window_sensor_158d0002d465c3:
+  window_room: chambre

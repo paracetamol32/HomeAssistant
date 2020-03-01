@@ -1,0 +1,109 @@
+jouer_sirene:
+  alias: '[Alarme] Jouer sirène une fois'
+  sequence:
+  - service: xiaomi_aqara.play_ringtone
+    data_template:
+      gw_mac: 78:11:DC:FD:6C:6F
+      ringtone_id: '{{ states.input_select.sirenes_gateway.state.split(''-'')[0] }}'
+      ringtone_vol: '{{ states.input_number.gateway_volume.state|int }}'
+jouer_sirene_boucle:
+  alias: '[Alarme] Jouer sirène en boucle'
+  sequence:
+  - condition: state
+    entity_id: input_boolean.sourdine_sirenes_gateway
+    state: 'off'
+  - service: xiaomi_aqara.play_ringtone
+    data_template:
+      gw_mac: 78:11:DC:FD:6C:6F
+      ringtone_id: '{{ states.input_select.sirenes_gateway.state.split(''-'')[0] }}'
+      ringtone_vol: '{{ states.input_number.gateway_volume.state|int }}'
+  - delay: 00:00:{{ states.input_number.delai_boucle.state | int }}
+  - service: script.boucle_sirene
+boucle_sirene:
+  alias: '[Alarme] Boucle de sirène'
+  sequence:
+  - condition: state
+    entity_id: input_boolean.sourdine_sirenes_gateway
+    state: 'off'
+  - delay: 00:00:{{ states.input_number.delai_boucle.state | int }}
+  - service: script.jouer_sirene_boucle
+sourdine_sirene:
+  alias: '[Alarme] Mettre le son de la sirène en sourdine'
+  sequence:
+  - service: xiaomi.play_ringtone
+    data_template:
+      gw_mac: 78:11:DC:FD:6C:6F
+      ringtone_id: '{{ states.input_select.sirenes_gateway.state.split(''-'')[0] }}'
+      ringtone_vol: '0'
+activer_son_sirene:
+  alias: '[Alarme] Activer le son de la sirène'
+  sequence:
+  - service: xiaomi.play_ringtone
+    data_template:
+      gw_mac: 78:11:DC:FD:6C:6F
+      ringtone_id: '{{ states.input_select.sirenes_gateway.state.split(''-'')[0] }}'
+      ringtone_vol: '{{ states.input_slider.gateway_volume.state|int }}'
+allumer_wall_plug:
+  alias: Allumer Wall Plug
+  sequence:
+    entity_id: switch.fibaro_system_fgwpe_f_wall_plug_gen5_switch
+    service: switch.turn_on
+eteindre_wall_plug:
+  alias: Éteindre Wall Plug
+  sequence:
+    entity_id: switch.fibaro_system_fgwpe_f_wall_plug_gen5_switch
+    service: switch.turn_off
+eteindre_chauffage_chambre:
+  alias: Éteindre Chauffage Chambre
+  sequence:
+    entity_id: climate.chambre
+    service: climate.turn_off
+allumer_chauffage_chambre:
+  alias: Allumer Chauffage Chambre
+  sequence:
+    entity_id: climate.chambre
+    service: climate.turn_on
+
+    
+
+ouvrir_portail_dom:
+  alias: Ouvrir Portail Dom
+  sequence:
+   - service: cover.open_cover
+     entity_id: cover.portaildom
+   - service: python_script.set_state
+     data_template:
+        entity_id: cover.portaildom
+        state: open
+
+fermer_portail_dom:
+  alias: Fermer Portail Dom
+  sequence:
+   - service: cover.close_cover
+     entity_id: cover.portaildom
+   - service: python_script.set_state
+     data_template:
+      entity_id: cover.portaildom
+      state: close
+
+ouvrir_portail_flo:
+  alias: Ouvrir Portail Flo
+  sequence:
+   - service: switch.turn_on 
+     entity_id : switch.portailflo_portail
+   - service: python_script.set_state
+     data_template:
+      entity_id: switch.0b110001011187f601010f70
+      state: on
+
+     
+
+fermer_portail_flo:
+  alias: Fermer Portail Flo
+  sequence:
+    - service: switch.turn_off 
+      entity_id : switch.portailflo_portail
+    - service: python_script.set_state
+      data_template:
+       entity_id: switch.0b110001011187f601010f70
+       state: off

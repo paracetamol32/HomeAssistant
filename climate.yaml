@@ -1,0 +1,78 @@
+- platform: generic_thermostat
+  name: Thermostat Salon
+  heater: switch.shelly_shsw_1_68b8e1
+  target_sensor: sensor.mi_t_582d34348637
+  min_temp: 15
+  max_temp: 24
+  ac_mode: false
+  target_temp: 21
+  cold_tolerance: 0.1
+  hot_tolerance: 0.1
+  min_cycle_duration:
+    minutes: 10
+  keep_alive:
+    minutes: 3
+  initial_hvac_mode: "heat"
+  away_temp: 19
+  precision: 0.1
+
+- platform: generic_thermostat
+  name: Thermostat Lola
+  heater: input_boolean.sw_lola
+  target_sensor: sensor.mi_t_582d34350d67
+  min_temp: 15
+  max_temp: 24
+  ac_mode: false
+  cold_tolerance: 0.3
+  hot_tolerance: 0.1
+  min_cycle_duration:
+    minutes: 1
+  keep_alive:
+    minutes: 3
+  initial_hvac_mode: "heat"
+  away_temp: 19
+  precision: 0.1
+
+- platform: generic_thermostat
+  name: Thermostat Chambre
+  heater: input_boolean.sw_chambre
+  target_sensor: sensor.mi_t_4c65a8de3abb
+  min_temp: 15
+  max_temp: 24
+  ac_mode: false
+  cold_tolerance: 0.3
+  hot_tolerance: 0.1
+  min_cycle_duration:
+    minutes: 1
+  keep_alive:
+    minutes: 3
+  initial_hvac_mode: "heat"
+  away_temp: 19
+  precision: 0.1
+  
+  
+- platform: generic_thermostat
+  name: Thermostat Bureau
+  heater: climate.bureau
+  target_sensor: sensor.tempbureau
+  min_temp: 15
+  max_temp: 28
+  ac_mode: false
+  cold_tolerance: 0.3
+  hot_tolerance: 0.1
+  min_cycle_duration:
+    minutes: 1
+  keep_alive:
+    minutes: 3
+  initial_hvac_mode: "off"
+  away_temp: 19
+  precision: 0.1
+  
+- platform: climate_group
+  name: 'Clim Daikin'
+  entities:
+    - climate.thermostat_bureau
+    - climate.thermostat_lola
+
+
+

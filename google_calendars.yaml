@@ -1,0 +1,40 @@
+
+- cal_id: "ogva30i0f9r8pajhfs8asdvjbo@group.calendar.google.com"
+  entities:
+  - device_id: homeassistant
+    name: Home Assistant CAL
+    track: true
+- cal_id: vecteurinformatique@gmail.com
+  entities:
+  - device_id: vecteurinformatique_gmail_com
+    ignore_availability: true
+    name: vecteurinformatique@gmail.com
+    track: true
+
+- cal_id: family02196756887897541032@group.calendar.google.com
+  entities:
+  - device_id: famille
+    ignore_availability: true
+    name: Famille
+    track: true
+
+- cal_id: addressbook#contacts@group.v.calendar.google.com
+  entities:
+  - device_id: contacts
+    ignore_availability: true
+    name: Contacts
+    track: true
+
+- cal_id: fr.french#holiday@group.v.calendar.google.com
+  entities:
+  - device_id: jours_feries_en_france
+    ignore_availability: true
+    name: "Jours f\xE9ri\xE9s en France"
+    track: true
+
+- cal_id: e_2_fr#weeknum@group.v.calendar.google.com
+  entities:
+  - device_id: week_numbers
+    ignore_availability: true
+    name: Week Numbers
+    track: true

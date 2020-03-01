@@ -1,0 +1,9 @@
+# Example configuration.yaml entry
+
+  - platform: denonavr
+    host: 192.168.32.18
+    name: AMPLI DENON
+    show_all_sources: true
+
+  - platform: panasonic_viera
+    host: 192.168.32.95
