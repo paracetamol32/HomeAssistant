@@ -3,7 +3,8 @@ schedy_heating:  # This is our app instance name.
   class: SchedyApp
 
   actor_type: thermostat
-
+  schedule_append:
+    - v: "OFF"
   rooms:
 
     lola:
@@ -14,15 +15,7 @@ schedy_heating:  # This is our app instance name.
         - binary_sensor.door_window_sensor_158d0002bfc4f8
       schedule:
         - v: 19
-          rules:
-        - weekdays: 6-7
-          rules:
-          - { start: "21:00", end: "09:00" }
-        - v: 20
-          rules:
-        - weekdays: 6-7
-          rules:
-          - { start: "09:00", end: "21:00" }
+
     chambre:
       rescheduling_delay: 10
       actors:
@@ -30,13 +23,8 @@ schedy_heating:  # This is our app instance name.
       watched_entities:
         - binary_sensor.door_window_sensor_158d0002d465c3
       schedule:
-        - v: 18
-          rules:
-        - weekdays: 1-5
-          rules:
-          - { start: "06:00", end: "07:30" }
-          - { start: "15:00", end: "22:30" }
-        - weekdays: 6-7
-          rules:
-          - { start: "08:00", end: "23:30" }
+        - v: "OFF"
+        - { v: 18, start: "21:00", end: "08:00", weekdays: 1-5 }
+        - { v: 18, start: "21:30", end: "09:00", weekdays: 6-7 }
+
 
