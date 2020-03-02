@@ -93,7 +93,7 @@ ouvrir_portail_flo:
      entity_id : switch.portailflo_portail
    - service: python_script.set_state
      data_template:
-      entity_id: switch.0b110001011187f601010f70
+      entity_id: switch.0b110005011187f601010f70
       state: on
 
      
@@ -105,5 +105,5 @@ fermer_portail_flo:
       entity_id : switch.portailflo_portail
     - service: python_script.set_state
       data_template:
-       entity_id: switch.0b110001011187f601010f70
+       entity_id: switch.0b110005011187f601010f70
        state: off

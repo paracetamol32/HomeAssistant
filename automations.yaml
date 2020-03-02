@@ -375,7 +375,7 @@
   - service: script.turn_on
     entity_id: script.fermer_portail_dom
 
-- alias: 'Fermeture Portail Dom Bouton'
+- alias: 'Set Status Portail Dom Bouton'
   trigger:
     platform: event
     event_type: xiaomi_aqara.click
@@ -395,7 +395,7 @@
    ############################################################
    ##               AUTOMATIONS  PORTAIL FLO                 ##   
    ############################################################   
-- alias: 'Ouverture Portail Flo'
+- alias: 'Ouverture Portail Flo Geoloc'
   trigger:
     platform: zone
     entity_id: device_tracker.redmi_5
@@ -412,33 +412,33 @@
    ############################################################
    ##               AUTOMATIONS DIO  PORTAIL FLO          ##
    ############################################################    
-- alias: 'Ouverture Portail Flo Bouton'
+- alias: 'Ouverture Portail Flo DIO'
   trigger:
      platform: state
-     entity_id:  switch.0b110001011187f601010f70
+     entity_id:  switch.0b110005011187f601010f70
   condition:
      - condition: state
-       entity_id:  switch.0b110001011187f601010f70
+       entity_id:  switch.0b110005011187f601010f70
        state: 'on'
   action:
    - service: script.turn_on
      entity_id: script.ouvrir_portail_flo 
  
-- alias: 'Fermeture Portail Flo Bouton'
+- alias: 'Fermeture Portail Flo DIO'
   trigger:
      platform: state
-     entity_id:  switch.0b110001011187f601010f70
+     entity_id:  switch.0b110005011187f601010f70
   condition:
      - condition: state
-       entity_id:  switch.0b110001011187f601010f70
+       entity_id:  switch.0b110005011187f601010f70
        state: 'off'
   action:
    - service: script.turn_on
      entity_id: script.fermer_portail_flo 
    ############################################################
-   ##               AUTOMATIONS BOUTON  PORTAIL FLO          ##
+   ##         AUTOMATIONS BOUTON XIAOMI PORTAIL FLO          ##
    ############################################################    
-- alias: 'Ouverture Portail Flo DIO'
+- alias: 'Ouverture Portail Flo Bouton Xiaomi'
   trigger:
      platform: event
      event_type: xiaomi_aqara.click
@@ -453,7 +453,7 @@
    - service: script.turn_on
      entity_id: script.ouvrir_portail_flo 
  
-- alias: 'Fermeture Portail Flo Bouton'
+- alias: 'Fermeture Portail Flo Bouton Xiaomi'
   trigger:
      platform: event
      event_type: xiaomi_aqara.click
