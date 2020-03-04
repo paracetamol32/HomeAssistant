@@ -27,26 +27,6 @@
       field: stats_current_Temp5
       database: meteo
 
-  - platform: mqtt
-    name: "Power"
-    state_topic: "jeedom/Amp"
-    unit_of_measurement: 'W'
-    value_template: "{{ value_json.Puissance }}"
-  - platform: mqtt
-    name: "TempSalon"
-    state_topic: "jeedom/Tsalon"
-    unit_of_measurement: '°C'
-    value_template: "{{ value_json.Temp }}"
-  - platform: mqtt
-    name: "TempLola"
-    state_topic: "jeedom/Tlola"
-    unit_of_measurement: '°C'
-    value_template: "{{ value_json.Temp }}"
-  - platform: mqtt
-    name: "TempBureau"
-    state_topic: "jeedom/Tbureau"
-    unit_of_measurement: '°C'
-    value_template: "{{ value_json.Temp }}"
     
   - platform: mqtt
     name: "PACTempOut"
@@ -58,7 +38,45 @@
     state_topic: "ESP_PAC/Temp/TempIn"
     unit_of_measurement: '°C'
 
-
+#   - platform: mqtt
+#     name: "EDF"
+#     state_topic: "teleinfo/in/BASE"
+    
+  - platform: mqtt
+    name: "EDF Puissance apparente"
+    state_topic: "teleinfo/in"
+    value_template: "{{ value_json.PAPP }}"
+    unit_of_measurement: 'W'
+    
+  - platform: mqtt
+    name: "EDF Intensite instantanee"
+    state_topic: "teleinfo/in"
+    value_template: "{{ value_json.IINS }}"
+    unit_of_measurement: 'A'
+    
+  - platform: mqtt
+    name: "EDF I.Maximum"
+    state_topic: "teleinfo/in"
+    value_template: "{{ value_json.IMAX }}"
+    unit_of_measurement: 'A'
+    
+  - platform: mqtt
+    name: "EDF I.Souscrit"
+    state_topic: "teleinfo/in"
+    value_template: "{{ value_json.IISOUS }}"
+    unit_of_measurement: 'A'
+    
+  - platform: mqtt
+    name: "EDF Index Heures creuses"
+    state_topic: "teleinfo/in"
+    value_template: "{{ value_json.HCHC }}"
+    
+  - platform: mqtt
+    name: "EDF Index Heures pleines"
+    state_topic: "teleinfo/in" 
+    value_template: "{{ value_json.HCHP }}"
+    
+    
   - platform: mitemp_bt
     rounding: True
     decimals: 2

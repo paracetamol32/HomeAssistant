@@ -403,11 +403,11 @@
     # Event is either enter or leave
     event: enter # or "leave"
   action:
+  - service: script.turn_on
+    entity_id: script.ouvrir_portail_flo
   - service: notify.pushbullflo
     data:
       message: Arrivée Maison et ouverture portail
-  - service: script.turn_on
-    entity_id: script.ouverture_portail_flo
 
    ############################################################
    ##               AUTOMATIONS DIO  PORTAIL FLO          ##
