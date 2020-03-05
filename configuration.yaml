@@ -213,7 +213,26 @@ zwave:
   usb_path: /dev/ttyACM0
   device_config: !include zwave_device_config.yaml
 
+# device_tracker:
+#   - platform: bluetooth_tracker
+#     interval_seconds: 60
+#     new_device_defaults:
+#       track_new_devices: false
 
+  
+#   - platform: ble_tracker
+
+device_tracker:
+
+  - platform: bluetooth_tracker
+   
+
+  # - platform: bluetooth_le_tracker
+  #   scan_interval: 60
+  #   new_device_defaults:
+  #      track_new_devices: true
+ 
+   
 rflink:
   port: /dev/ttyUSB0
 
@@ -231,7 +250,9 @@ google:
 
 python_script:
 
-logger:
-  default: warning
-  logs:
-    xiaomi_aqara: debug
+# logger:
+#   default: warning
+#   logs:
+#     bluetooth_le_tracker: debug
+#     custom_components.mitemp_bt: debug
+#     bluetooth_tracker: debug

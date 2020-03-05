@@ -1,6 +1,7 @@
 - platform: generic_thermostat
   name: Thermostat Salon
   heater: switch.shelly_shsw_1_68b8e1
+  #target_sensor:  sensor.mi_salon_temperature
   target_sensor: sensor.mi_t_582d34348637
   min_temp: 15
   max_temp: 24
@@ -19,6 +20,7 @@
 - platform: generic_thermostat
   name: Thermostat Lola
   heater: input_boolean.sw_lola
+  #target_sensor:  sensor.mi_lola_temperature
   target_sensor: sensor.mi_t_582d34350d67
   min_temp: 15
   max_temp: 24
@@ -36,6 +38,7 @@
 - platform: generic_thermostat
   name: Thermostat Chambre
   heater: input_boolean.sw_chambre
+  #target_sensor:  sensor.mi_chambre_temperature
   target_sensor: sensor.mi_t_4c65a8de3abb
   min_temp: 15
   max_temp: 24
@@ -54,7 +57,8 @@
 - platform: generic_thermostat
   name: Thermostat Bureau
   heater: climate.bureau
-  target_sensor: sensor.tempbureau
+  #target_sensor: sensor.mi_bureau_temperature
+  target_sensor: sensor.mi_t_582d3434930d
   min_temp: 15
   max_temp: 28
   ac_mode: false

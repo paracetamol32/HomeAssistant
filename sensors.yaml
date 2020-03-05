@@ -38,9 +38,7 @@
     state_topic: "ESP_PAC/Temp/TempIn"
     unit_of_measurement: '°C'
 
-#   - platform: mqtt
-#     name: "EDF"
-#     state_topic: "teleinfo/in/BASE"
+
     
   - platform: mqtt
     name: "EDF Puissance apparente"
@@ -75,6 +73,11 @@
     name: "EDF Index Heures pleines"
     state_topic: "teleinfo/in" 
     value_template: "{{ value_json.HCHP }}"
+
+  - platform: mqtt
+    name: "NUT MQTT Lola"
+    state_topic: "Jeedom/nut" 
+    
     
     
   - platform: mitemp_bt
@@ -86,7 +89,53 @@
     active_scan: False
     hci_interface: 0
     batt_entities: False
-    
+
+
+
+# Example configuration.yaml entry
+
+ # Example configuration.yaml entry
+
+#   - platform: mitemp_bt
+#     mac: '58:2D:34:34:86:37'
+#     name: MI Salon
+#     force_update: true
+#     median: 1
+#     monitored_conditions:
+#       - temperature
+#       - humidity
+#       - battery
+
+#   - platform: mitemp_bt
+#     mac: '58:2D:34:35:0D:67'
+#     name: MI Lola
+#     force_update: true
+#     median: 1
+#     monitored_conditions:
+#       - temperature
+#       - humidity
+#       - battery
+
+#   - platform: mitemp_bt
+#     mac: '4C:65:A8:DE:3A:BB'
+#     name: MI CHambre
+#     force_update: true
+#     median: 1
+#     monitored_conditions:
+#       - temperature
+#       - humidity
+#       - battery
+
+#   - platform: mitemp_bt
+#     mac: '58:2D:34:34:93:0D'
+#     name: MI Bureau
+#     force_update: true
+#     median: 1
+#     monitored_conditions:
+#       - temperature
+#       - humidity
+#       - battery
+       
   - platform: rflink
     automatic_add: true
 

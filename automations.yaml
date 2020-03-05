@@ -240,7 +240,7 @@
   trigger:
     platform: sun
     event: sunset
-    offset: '+01:00:00'
+    offset: '+00:00:00'
   action:
     - service: cover.close_cover
       entity_id: cover.volet_cuisine_level
@@ -470,9 +470,8 @@
 
 
 
-   ############################################################
-   ##               DIO 4  BOUTON  VOLETS                    ##
-   ############################################################ 
+
+     
  
 - alias: 'Fermeture Volet DIO Bouton 1'
   trigger:
@@ -513,3 +512,37 @@
       entity_id: cover.porte_cuisine_level
       #- service: cover.open_cover
       #  entity_id: cover.volet_bureau_level
+  
+
+   ############################################################
+   ##               MQTT NUT PRESENCE LOLA                   ##
+   ############################################################ 
+  
+- alias: 'NUT MQTT PRESENT'
+  trigger:
+      platform: state
+      entity_id: sensor.nut_mqtt_lola
+  condition:
+      - condition: state
+        entity_id: sensor.nut_mqtt_lola
+        state: "1"
+  action:
+    - service: python_script.set_state
+      data_template:
+       entity_id: person.lola
+       state: 'home'
+
+
+- alias: 'NUT MQTT ABSENT'
+  trigger:
+      platform: state
+      entity_id: sensor.nut_mqtt_lola
+  condition:
+      - condition: state
+        entity_id: sensor.nut_mqtt_lola
+        state: "0"
+  action:
+    - service: python_script.set_state
+      data_template:
+       entity_id: person.lola
+       state: 'not_home'

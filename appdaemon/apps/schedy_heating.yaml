@@ -3,19 +3,50 @@ schedy_heating:  # This is our app instance name.
   class: SchedyApp
 
   actor_type: thermostat
+
+  expression_environment: |
+    def lola_mode():
+        return state("person.lola")
+
   schedule_append:
     - v: "OFF"
   rooms:
 
     lola:
-      rescheduling_delay: 10
+
+      rescheduling_delay: 2
       actors:
         climate.thermostat_lola:
       watched_entities:
         - binary_sensor.door_window_sensor_158d0002bfc4f8
+        - person.lola
       schedule:
-        - { v: 19, weekdays: 6-7 }
-        - { v: "OFF", weekdays: 1-5 }
+        - v: "OFF"
+          rules:
+            - weekdays: 1-5
+              rules:
+              - rules:
+                - x: "Next() if  lola_mode() == 'home' else Break()"
+                - v: 20
+              - rules:
+                - x: "Next() if  lola_mode() == 'not home'  else Break()"
+                - v: "OFF"
+            - weekdays: 6-7
+              rules:
+               - v: 20
+        # - v: 20
+        #   rules:
+        #   - weekdays: 1-5
+        #     rules:
+        #     - { start: "06:00", end: "07:30" }
+        #     - { start: "15:00", end: "22:30" }
+        #   - weekdays: 6-7
+        #     rules:
+        #     - { start: "08:00", end: "23:30" }
+
+      # schedule:
+      #   - { v: 19, weekdays: 6-7 }
+      #   - { v: "OFF", weekdays: 1-5 }
 
     chambre:
       rescheduling_delay: 10
