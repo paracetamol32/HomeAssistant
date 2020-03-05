@@ -1,7 +1,7 @@
 
 
 default_config:
-  
+
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
@@ -27,7 +27,7 @@ vacuum:
     token: !secret vaccum_token
     name: Mi Robo
 
-# You can leave MAC empty if you only have one gateway.
+
 xiaomi_aqara:
   discovery_retry: 5
   gateways:
@@ -43,7 +43,6 @@ influxdb:
        - sensor.pactempin
        - sensor.pactempout
 
-#sensor:
 
 mqtt:
   broker: 192.168.32.93
@@ -215,7 +214,7 @@ rflink:
 
 rfxtrx:
   device: /dev/ttyUSB1
-  debug: 1
+
 binary_sensor:
   platform: rfxtrx
   automatic_add: false
