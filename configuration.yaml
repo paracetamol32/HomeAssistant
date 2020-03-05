@@ -1,11 +1,7 @@
 
-# Configure a default setup of Home Assistant (frontend, api, etc)
+
 default_config:
-
-
-# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-# http:
-#   base_url: example.duckdns.org:8123
+  
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
@@ -174,7 +170,7 @@ input_number:
    ############################################################
    ##                       PUSHBULLET                       ##
    ############################################################
-# Example configuration.yaml entry
+
 notify:
   - name: pushbullhome
     platform: pushbullet
@@ -209,25 +205,10 @@ zwave:
   usb_path: /dev/ttyACM0
   device_config: !include zwave_device_config.yaml
 
-# device_tracker:
-#   - platform: bluetooth_tracker
-#     interval_seconds: 60
-#     new_device_defaults:
-#       track_new_devices: false
-
-  
-#   - platform: ble_tracker
 
 device_tracker:
-
   - platform: bluetooth_tracker
-   
 
-  # - platform: bluetooth_le_tracker
-  #   scan_interval: 60
-  #   new_device_defaults:
-  #      track_new_devices: true
- 
    
 rflink:
   port: /dev/ttyUSB0
@@ -238,17 +219,11 @@ rfxtrx:
 binary_sensor:
   platform: rfxtrx
   automatic_add: false
-  
-# Example configuration.yaml entry
+
 google:
   client_id: !secret google_id
   client_secret: !secret google_secret  
 
 python_script:
 
-# logger:
-#   default: warning
-#   logs:
-#     bluetooth_le_tracker: debug
-#     custom_components.mitemp_bt: debug
-#     bluetooth_tracker: debug
+
