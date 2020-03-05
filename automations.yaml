@@ -520,12 +520,9 @@
   
 - alias: 'NUT MQTT PRESENT'
   trigger:
-      platform: state
-      entity_id: sensor.nut_mqtt_lola
-  condition:
-      - condition: state
-        entity_id: sensor.nut_mqtt_lola
-        state: "1"
+      platform: mqtt
+      topic: Jeedom/nut
+      payload: "1"
   action:
     - service: python_script.set_state
       data_template:
@@ -535,12 +532,9 @@
 
 - alias: 'NUT MQTT ABSENT'
   trigger:
-      platform: state
-      entity_id: sensor.nut_mqtt_lola
-  condition:
-      - condition: state
-        entity_id: sensor.nut_mqtt_lola
-        state: "0"
+      platform: mqtt
+      topic: Jeedom/nut
+      payload: "0"
   action:
     - service: python_script.set_state
       data_template:
