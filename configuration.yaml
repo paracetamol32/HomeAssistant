@@ -19,11 +19,7 @@ cover: !include cover.yaml
 homeassistant:
   customize: !include customize.yaml
   
-# customizer:
-#   custom_ui: local
 
-# logger:
-#   default: debug
 
 frontend:
   themes: !include_dir_merge_named themes/
@@ -57,8 +53,8 @@ mqtt:
   broker: 192.168.32.93
   discovery: true
   port: 1883
-  username: !secret mqttuser
-  password: !secret mqttpassword
+  username: !secret mqttusr
+  password: !secret mqttpw
   client_id: home-assistant
   keepalive: 60
 
