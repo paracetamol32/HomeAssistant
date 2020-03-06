@@ -540,3 +540,20 @@
       data_template:
        entity_id: person.lola
        state: 'not_home'
+
+
+   ############################################################
+   ##               FERMETURE PORTAIL FLO SI ABS 10MN        ##
+   ############################################################ 
+
+- alias: Fermeture portail si flo abs 10mn
+
+  trigger:
+    platform: state
+    entity_id: switch.portailflo_portail
+    to: 'on'
+    for:
+      minutes: 10
+  action:
+    service: script.turn_on
+    entity_id: script.fermer_portail_flo
