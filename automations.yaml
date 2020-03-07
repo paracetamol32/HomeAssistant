@@ -190,6 +190,9 @@
     platform: state
     entity_id: group.all_people
     to: 'not_home'
+  condition:
+    - condition: template
+      value_template: '{{ (as_timestamp(now()) - as_timestamp(states.automation.aspirateur.attributes.last_triggered | default(0)) | int > 36000)}}'
   action:
   - service: vacuum.start
     entity_id: vacuum.mi_robo
@@ -546,7 +549,7 @@
    ##               FERMETURE PORTAIL FLO SI ABS 10MN        ##
    ############################################################ 
 
-- alias: Fermeture portail si flo abs 10mn
+- alias: Fermeture portail si Flo abs 10mn
 
   trigger:
     platform: state
@@ -555,5 +558,23 @@
     for:
       minutes: 10
   action:
-    service: script.turn_on
-    entity_id: script.fermer_portail_flo
+   - service: script.turn_on
+     entity_id: script.fermer_portail_flo
+
+
+
+   ############################################################
+   ##               FERMETURE PORTAIL DOM SI ABS 10MN        ##
+   ############################################################ 
+
+- alias: Fermeture portail si Dom abs 10mn
+
+  trigger:
+    platform: state
+    entity_id: cover.portaildom
+    to: 'open'
+    for:
+      minutes: 10
+  action:
+   - service: script.turn_on
+     entity_id: script.fermer_portail_dom
