@@ -21,3 +21,11 @@
     devices:
       0b11000203bc0cfe09010f70:
         name: vmc
+
+  - platform: rfxtrx
+    automatic_add: true
+    devices:
+      0b11000442bc0cfe08010f70:
+        name: pomp_aqua
+
+

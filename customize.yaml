@@ -36,3 +36,12 @@ binary_sensor.door_window_sensor_158d0002bfc4f8:
   window_room: lola
 binary_sensor.door_window_sensor_158d0002d465c3:
   window_room: chambre
+
+
+person.lola:
+  entity_picture: "/local/lola.png"
+person.flo:
+  entity_picture: "/local/flo.png"
+person.dom:
+  entity_picture: "/local/dom.png"
+  

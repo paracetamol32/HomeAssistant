@@ -557,6 +557,9 @@
     to: 'on'
     for:
       minutes: 10
+  condition:
+      condition: template
+      value_template: "{{ states.binary_sensor.motion_sensor_158d0001aea5a7.attributes['No motion since']| int > 299 }}"
   action:
    - service: script.turn_on
      entity_id: script.fermer_portail_flo
@@ -567,6 +570,8 @@
    ##               FERMETURE PORTAIL DOM SI ABS 10MN        ##
    ############################################################ 
 
+
+   # binary_sensor.motion_sensor_158d0001aea5a7
 - alias: Fermeture portail si Dom abs 10mn
 
   trigger:
@@ -575,6 +580,28 @@
     to: 'open'
     for:
       minutes: 10
+  condition:
+      condition: template
+      value_template: "{{ states.binary_sensor.motion_sensor_158d0001aea5a7.attributes['No motion since']| int > 299 }}"
   action:
    - service: script.turn_on
      entity_id: script.fermer_portail_dom
+
+   ############################################################
+   ##                      POMPE AQUA                        ##
+   ############################################################ 
+
+- alias: Pompe brassage aquarium
+  trigger:
+       - platform: time
+         at: '16:00:00'
+       - platform: homeassistant
+         event: start
+  condition:
+       - condition: time
+         after: '16:00:00'
+         before: '17:00:00'
+  action:
+       - service: switch.turn_on
+         entity_id: switch.pomp_aqua
+          

@@ -143,3 +143,18 @@
   - platform: rfxtrx
     automatic_add: true
     
+  - platform: command_line
+    name: CPU Temp
+    command: "cat /sys/class/thermal/thermal_zone2/temp"
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(0) }}'
+
+  - platform: systemmonitor
+    resources:
+
+      - type: processor_use
+      - type: disk_use_percent
+        arg: "/"
+      - type: memory_use_percent
+
+    
