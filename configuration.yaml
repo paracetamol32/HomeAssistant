@@ -148,6 +148,10 @@ input_boolean:
     icon: mdi:thermostat-box
   sw_test:
     initial: off
+  sw_verrou_potail_flo:
+    initial: off
+  sw_verrou_potail_dom:
+    initial: off
     
    ############################################################
    ##                     INPUT_NUMBER                       ##

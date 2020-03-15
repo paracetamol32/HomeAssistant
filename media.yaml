@@ -8,6 +8,3 @@
   - platform: panasonic_viera
     host: 192.168.32.95
 
-  - platform: androidtv
-    name: MI BOX
-    host: 192.168.32.123

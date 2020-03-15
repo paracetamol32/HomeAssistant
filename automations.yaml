@@ -1,3 +1,14 @@
+- alias: 'handle startup event'
+  trigger:
+    platform: event
+    event_type: homeassistant_start
+  action:
+  - service: python_script.set_state
+    data_template:
+     entity_id: cover.portaildom
+     state: close
+
+
 - alias: '[Alarme] Boolean Sirène en sourdine'
   initial_state: true
   trigger:
@@ -26,23 +37,6 @@
 
 
 
-- alias: '[Présence] Alerte Pushbullet Fenetre Ouverte'
-  initial_state: 'on'
-  trigger:
-    platform: state
-    entity_id: binary_sensor.door_window_sensor_158d0002d465c3
-    from: 'off'
-    to: 'on'
-  action:
-  - service: notify.pushbullhome
-    data:
-      title: Alerte! Alerte!
-      message: La fenetre vient de s'ouvrir!
-  - service: notify.pushbullflo
-    data:
-      title: Alerte! Alerte!
-      message: La fenetre vient de s'ouvrir!
-  id: ee24caeb70514ca195b4e519439127cc
   
    ############################################################
    ##                       AUTOMATIONS                      ##
@@ -155,35 +149,12 @@
   - service: input_boolean.turn_off
     data:
       entity_id: input_boolean.sourdine_sirenes_gateway
- 
-      
-- alias: 'On / Off des Thermostats'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.thermostats_on_off
-  action:
-  - service: climate.set_hvac_mode
-    entity_id: climate.clim_daikin
-    data_template:
-      hvac_mode: >
-        {% if states.input_boolean.thermostats_on_off.state == "on" %}
-          heat
-        {% else %}
-          off
-        {% endif %}
 
-- alias: '[Portail FLO] Ouvert'
-  initial_state: 'off'
-  trigger:
-    platform: state
-    entity_id: switch.portailflo_portail
-    to: 'on'
-  action:
-  - service: notify.pushbullflo
-    data:
-      message: Portail Ouvert!
 
+
+   ############################################################
+   ##                  ASPIRATEUR MAISON                     ##
+   ############################################################
 
 - alias: 'Aspirateur'
   trigger:
@@ -200,6 +171,9 @@
     data:
       message: Robert Bosse!
 
+   ############################################################
+   ##                      PLUGG MOTO                        ##
+   ############################################################
 
 - alias: 'Allumage Wall Plug Moto'
   trigger:
@@ -218,13 +192,13 @@
       entity_id: script.eteindre_wall_plug
 
    ############################################################
-   ##                 AUTOMATIONS  VOLETS                    ##
+   ##                 AUTOMATIONS  VOLETS   Soleil           ##
    ############################################################
 - alias: 'Send notification when sun rises'
   trigger:
     platform: sun
     event: sunrise
-    offset: '+00:00:00'
+    offset: '-00:30:00'
   action:
     - service: cover.open_cover
       entity_id: cover.volet_cuisine_level
@@ -236,14 +210,13 @@
       entity_id: cover.porte_cuisine_level
     - service: cover.open_cover
       entity_id: cover.volet_bureau_level
-      
       
       
 - alias: 'Send notification when sun sets'
   trigger:
     platform: sun
     event: sunset
-    offset: '+00:00:00'
+    offset: '+00:30:00'
   action:
     - service: cover.close_cover
       entity_id: cover.volet_cuisine_level
@@ -256,7 +229,9 @@
     - service: cover.close_cover
       entity_id: cover.volet_bureau_level
   
-  
+   ############################################################
+   ##             Ouverture Volet Porte Cuisine              ##
+   ############################################################      
   
 - alias: Ouverture Volet Porte Cuisine
   trigger: 
@@ -341,10 +316,36 @@
     entity_id: device_tracker.mi_mix_2
     zone: zone.home
     event: enter # or "leave"
+  condition:
+    - condition: state
+      entity_id: input_boolean.sw_verrou_potail_dom
+      state: 'off'
   action:
   - service: script.turn_on
-    entity_id: script.ouvrir_portail_dom 
+    entity_id: script.ouvrir_portail_dom
+    
+- alias: 'Verrouillage Portail Dom Geoloc'
+  trigger:
+    platform: zone
+    entity_id: device_tracker.mi_mix_2
+    zone: zone.home
+    event: leave # or "leave"
+  action:
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.sw_verrou_potail_dom
+    #sw_Verrou_potail_dom
 
+- alias: 'Deverrouillage Portail Dom Geoloc'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sw_verrou_potail_dom
+    to: 'on'
+    for:
+      minutes: 10
+  action:
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.sw_verrou_potail_dom
+  
    ############################################################
    ##               AUTOMATIONS BOUTON  PORTAIL DOM          ##
    ############################################################    
@@ -405,12 +406,40 @@
     zone: zone.home
     # Event is either enter or leave
     event: enter # or "leave"
+  condition:
+    - condition: state
+      entity_id: input_boolean.sw_verrou_potail_flo
+      state: 'off'
   action:
   - service: script.turn_on
     entity_id: script.ouvrir_portail_flo
   - service: notify.pushbullflo
     data:
       message: Arrivée Maison et ouverture portail
+
+- alias: 'Verrouillage Portail Flo Geoloc'
+  trigger:
+    platform: zone
+    entity_id: device_tracker.redmi_5
+    zone: zone.home
+    event: leave # or "leave"
+  action:
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.sw_verrou_potail_flo
+    #sw_Verrou_potail_dom
+
+- alias: 'Deverrouillage Portail Flo Geoloc'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sw_verrou_potail_flo
+    to: 'on'
+    for:
+      minutes: 10
+  action:
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.sw_verrou_potail_flo
+  
+
 
    ############################################################
    ##               AUTOMATIONS DIO  PORTAIL FLO          ##
@@ -438,6 +467,9 @@
   action:
    - service: script.turn_on
      entity_id: script.fermer_portail_flo 
+     
+     
+     
    ############################################################
    ##         AUTOMATIONS BOUTON XIAOMI PORTAIL FLO          ##
    ############################################################    
@@ -472,7 +504,9 @@
      entity_id: script.fermer_portail_flo
 
 
-
+   ############################################################
+   ##         COMMANDE TELECOMMANDE XIAOMI PORTAIL FLO       ##
+   ############################################################   
 
      
  
@@ -591,17 +625,21 @@
    ##                      POMPE AQUA                        ##
    ############################################################ 
 
-- alias: Pompe brassage aquarium
+- alias: Pompe brassage aquarium ON
   trigger:
        - platform: time
          at: '16:00:00'
-       - platform: homeassistant
-         event: start
-  condition:
-       - condition: time
-         after: '16:00:00'
-         before: '17:00:00'
   action:
        - service: switch.turn_on
+         entity_id: switch.pomp_aqua
+ 
+ 
+         
+- alias: Pompe brassage aquarium off
+  trigger:
+       - platform: time
+         at: '18:00:00'
+  action:
+       - service: switch.turn_off
          entity_id: switch.pomp_aqua
           
