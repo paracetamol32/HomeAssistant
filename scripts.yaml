@@ -1,3 +1,13 @@
+jouer_digdong:
+  alias: '[Sonette] Jouer Sonette'
+  sequence:
+  - service: xiaomi_aqara.play_ringtone
+    data_template:
+      gw_mac: 78:11:DC:FD:6C:6F
+      ringtone_id: '{{ states.input_select.sirenes_gateway.state.split(''-'')[10] }}'
+      ringtone_vol: '{{ states.input_number.gateway_volume.state|int }}'
+
+
 jouer_sirene:
   alias: '[Alarme] Jouer sirène une fois'
   sequence:

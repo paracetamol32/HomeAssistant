@@ -27,6 +27,7 @@ cover.volet_cuisine_level:
 cover.portaildom:
   assumed_state: false
   initial_state: closed
+  state: closed
 binary_sensor.0b11007c013e320a01000070:
   friendly_name: DIO4BT1
 binary_sensor.0b11007e013e320a02000070:
@@ -52,5 +53,3 @@ device_tracker.mi_mix_2:
 device_tracker.redmi_5:
   consider_home: 180
   
-
-  initial_state: closed

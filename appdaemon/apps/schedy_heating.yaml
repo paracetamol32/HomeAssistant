@@ -7,6 +7,10 @@ schedy_heating:  # This is our app instance name.
   expression_environment: |
     def lola_mode():
         return state("person.lola")
+    def velux_state():
+        return state("binary_sensor.capteur_velux_lola_contact")
+    def fenetre_state():
+        return state("binary_sensor.capteur_fenetre_chambre_contact")
 
   schedule_append:
     - v: "OFF"
@@ -18,45 +22,55 @@ schedy_heating:  # This is our app instance name.
       actors:
         climate.thermostat_lola:
       watched_entities:
-        - binary_sensor.door_window_sensor_158d0002bfc4f8
+        - binary_sensor.capteur_velux_lola_contact
         - person.lola
-      schedule:
-        - v: "OFF"
-          rules:
-            - weekdays: 1-5
-              rules:
-              - rules:
-                - x: "Next() if  lola_mode() == 'home' else Break()"
-                - v: 20
-              - rules:
-                - x: "Next() if  lola_mode() == 'not home'  else Break()"
-                - v: "OFF"
-            - weekdays: 6-7
-              rules:
-               - v: 20
-        # - v: 20
-        #   rules:
-        #   - weekdays: 1-5
-        #     rules:
-        #     - { start: "06:00", end: "07:30" }
-        #     - { start: "15:00", end: "22:30" }
-        #   - weekdays: 6-7
-        #     rules:
-        #     - { start: "08:00", end: "23:30" }
 
-      # schedule:
-      #   - { v: 19, weekdays: 6-7 }
-      #   - { v: "OFF", weekdays: 1-5 }
+      schedule:
+        - v: 20
+          rules:
+            - x: "Break() if is_on('binary_sensor.capteur_velux_lola_contact') else Next()"
+            - x: "Break() if  lola_mode() == 'not home'  else Next()"
+            - rules:
+              - weekdays: 1-5
+                rules:
+                 - { v: 18, start: "21:00", end: "08:00" }
+                 - { v: 20, start: "08:00", end: "21:00" }
+                 
+              - weekdays: 6-7
+                rules:
+                 - { v: 19, start: "21:00", end: "08:00" }
+                 - { v: 20, start: "08:00", end: "21:00" }
+                 
+            - v: "OFF"
+
 
     chambre:
       rescheduling_delay: 10
       actors:
         climate.thermostat_chambre:
       watched_entities:
-        - binary_sensor.door_window_sensor_158d0002d465c3
+        - binary_sensor.capteur_fenetre_chambre_contact
+ 
       schedule:
-        - { v: 18, start: "21:00", end: "08:00", weekdays: 1-5 }
-        - { v: 18, start: "21:30", end: "09:00", weekdays: 6-7 }
+        - v: 18
+          rules:
+          - x: "Break() if is_on('binary_sensor.capteur_fenetre_chambre_contact') else Next()"
+          
+          - rules:
+            - weekdays: 1-5
+              rules:
+               - { start: "21:00", end: "08:00" }
+               - v: 18
+            - weekdays: 6-7
+              rules:
+               - { start: "21:00", end: "15:00" }
+               - v: 19
+          - v: "OFF"
+
+
+
+
+
 
     salon:
       rescheduling_delay: 10

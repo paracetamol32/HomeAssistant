@@ -2,7 +2,8 @@
   name: Thermostat Salon
   heater: switch.shelly_shsw_1_68b8e1
   #target_sensor:  sensor.mi_salon_temperature
-  target_sensor: sensor.mi_t_582d34348637
+  #target_sensor: sensor.mi_t_582d34348637
+  target_sensor: sensor.temp_mqtt_salon
   min_temp: 15
   max_temp: 24
   ac_mode: false
@@ -21,7 +22,8 @@
   name: Thermostat Lola
   heater: input_boolean.sw_lola
   #target_sensor:  sensor.mi_lola_temperature
-  target_sensor: sensor.mi_t_582d34350d67
+  #target_sensor: sensor.mi_t_582d34350d67
+  target_sensor: sensor.temp_mqtt_lola
   min_temp: 15
   max_temp: 24
   ac_mode: false

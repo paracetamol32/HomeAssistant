@@ -75,11 +75,35 @@
     value_template: "{{ value_json.HCHP }}"
 
   - platform: mqtt
+    name: "TEMP MQTT Lola"
+    state_topic: "Jeedom/lola_temp" 
+    
+  - platform: mqtt
+    name: "TEMP MQTT Salon"
+    state_topic: "Jeedom/salon_temp" 
+    
+    
+  - platform: mqtt
     name: "NUT MQTT Lola"
     state_topic: "Jeedom/nut" 
+
+  - platform: mqtt
+    name: "Inter HomeCinema"
+    state_topic: "zigbee2mqtt/0x00158d0002c7a5a9"    
+    
+  - platform: mqtt
+    name: "Inter Garage Dom"
+    state_topic: "zigbee2mqtt/0x00158d0002016168"     
     
     
     
+  - platform: mqtt
+    name: Bridge state
+    state_topic: "zigbee2mqtt/bridge/state"
+    icon: mdi:router-wireless
+    
+
+
   - platform: mitemp_bt
     rounding: True
     decimals: 2

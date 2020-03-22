@@ -1,7 +1,7 @@
 # Example configuration.yaml entry
 
   - platform: denonavr
-    host: 192.168.32.18
+    host: 192.168.32.14
     name: AMPLI DENON
     show_all_sources: true
 

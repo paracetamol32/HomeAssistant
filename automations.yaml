@@ -235,7 +235,7 @@
   
 - alias: Ouverture Volet Porte Cuisine
   trigger: 
-    - entity_id: binary_sensor.door_window_sensor_158d0003d4a095
+    - entity_id: binary_sensor.capteur_porte_cuisine_contact
       platform: state
       from: 'off'
       to: 'on'
@@ -351,11 +351,12 @@
    ############################################################    
 - alias: 'Ouverture Portail Dom Bouton'
   trigger:
-    platform: event
-    event_type: xiaomi_aqara.click
-    event_data:
-      entity_id: binary_sensor.switch_158d0002016168
-      click_type: single
+        platform: device
+        domain: mqtt
+        device_id: 7590c0fc9dd5438f8c2c39ce14864ab5
+        type: click
+        subtype: single
+        discovery_id: 0x00158d0002016168 click_single
   condition:
     - condition: state
       entity_id: cover.portaildom
@@ -366,11 +367,12 @@
 
 - alias: 'Fermeture Portail Dom Bouton'
   trigger:
-    platform: event
-    event_type: xiaomi_aqara.click
-    event_data:
-      entity_id: binary_sensor.switch_158d0002016168
-      click_type: single
+        platform: device
+        domain: mqtt
+        device_id: 7590c0fc9dd5438f8c2c39ce14864ab5
+        type: click
+        subtype: single
+        discovery_id: 0x00158d0002016168 click_single
   condition:
     - condition: state
       entity_id: cover.portaildom
@@ -381,11 +383,12 @@
 
 - alias: 'Set Status Portail Dom Bouton'
   trigger:
-    platform: event
-    event_type: xiaomi_aqara.click
-    event_data:
-      entity_id: binary_sensor.switch_158d0002016168
-      click_type: single
+        platform: device
+        domain: mqtt
+        device_id: 7590c0fc9dd5438f8c2c39ce14864ab5
+        type: click
+        subtype: single
+        discovery_id: 0x00158d0002016168 click_single
   condition:
     - condition: state
       entity_id: cover.portaildom
@@ -642,4 +645,88 @@
   action:
        - service: switch.turn_off
          entity_id: switch.pomp_aqua
-          
+
+
+   ############################################################
+   ##                      ZiGBEE                            ##
+   ############################################################ 
+   
+- id: enable_zigbee_join
+  alias: Enable Zigbee joining
+  trigger:
+    platform: state
+    entity_id: input_boolean.zigbee_permit_join
+    to: 'on'
+  action:
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt/bridge/config/permit_join
+        payload: 'true'
+    - service: timer.start
+      data:
+        entity_id: timer.zigbee_permit_join
+        
+        
+        
+        
+- id: disable_zigbee_join
+  alias: Disable Zigbee joining
+  trigger:
+    - entity_id: input_boolean.zigbee_permit_join
+      platform: state
+      to: 'off'
+  action:
+    - data:
+        payload: 'false'
+        topic: zigbee2mqtt/bridge/config/permit_join
+      service: mqtt.publish
+    - data:
+        entity_id: timer.zigbee_permit_join
+      service: timer.cancel
+      
+      
+      
+      
+- id: disable_zigbee_join_timer
+  alias: Disable Zigbee joining by timer
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.zigbee_permit_join
+  action:
+    - service: mqtt.publish
+      data:
+        topic: zigbee2mqtt/bridge/config/permit_join
+        payload: 'false'
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.zigbee_permit_join
+
+
+- alias: Bouton VMC
+  trigger:
+        platform: device
+        domain: mqtt
+        device_id: 4843e5bca4c94981825630234ab96ed3
+        type: click
+        subtype: single
+        discovery_id: 0x00158d0002c7a5a9 click_single
+
+  action:
+      entity_id: switch.vmc
+      service: switch.toggle
+
+   ############################################################
+   ##                      Sonette                           ##
+   ############################################################ 
+
+      - alias: Déclencher Sonette
+  trigger:
+
+     platform: device
+      domain: mqtt
+      device_id: de817eea5a114efc872f2c36f8ac7967
+      type: click
+      subtype: single
+      discovery_id: 0x00158d0002c7a5a9 click_single
