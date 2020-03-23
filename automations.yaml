@@ -1,3 +1,15 @@
+- id: hass_startup
+  alias: 'Hass startup'
+  trigger:
+   - platform: homeassistant
+     event: start
+  action:
+  - service: python_script.set_state
+    data_template:
+     entity_id: cover.portaildom
+     state: close
+
+
 - alias: 'handle startup event'
   trigger:
     platform: event
@@ -381,23 +393,23 @@
   - service: script.turn_on
     entity_id: script.fermer_portail_dom
 
-- alias: 'Set Status Portail Dom Bouton'
-  trigger:
-        platform: device
-        domain: mqtt
-        device_id: 7590c0fc9dd5438f8c2c39ce14864ab5
-        type: click
-        subtype: single
-        discovery_id: 0x00158d0002016168 click_single
-  condition:
-    - condition: state
-      entity_id: cover.portaildom
-      state: 'unknown'
-  action:
-  - service: python_script.set_state
-    data_template:
-     entity_id: cover.portaildom
-     state: close
+# - alias: 'Set Status Portail Dom Bouton'
+#   trigger:
+#         platform: device
+#         domain: mqtt
+#         device_id: 7590c0fc9dd5438f8c2c39ce14864ab5
+#         type: click
+#         subtype: single
+#         discovery_id: 0x00158d0002016168 click_single
+#   condition:
+#     - condition: state
+#       entity_id: cover.portaildom
+#       state: 'unknown'
+#   action:
+#   - service: python_script.set_state
+#     data_template:
+#      entity_id: cover.portaildom
+#      state: close
 
    ############################################################
    ##               AUTOMATIONS  PORTAIL FLO                 ##   
@@ -721,12 +733,3 @@
    ##                      Sonette                           ##
    ############################################################ 
 
-      - alias: Déclencher Sonette
-  trigger:
-
-     platform: device
-      domain: mqtt
-      device_id: de817eea5a114efc872f2c36f8ac7967
-      type: click
-      subtype: single
-      discovery_id: 0x00158d0002c7a5a9 click_single

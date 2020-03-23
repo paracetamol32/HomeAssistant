@@ -2,6 +2,9 @@
 
 default_config:
 
+recorder:
+  purge_keep_days: 3
+
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
