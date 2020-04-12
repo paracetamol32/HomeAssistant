@@ -9,7 +9,6 @@
      entity_id: cover.portaildom
      state: close
 
-
 - alias: 'handle startup event'
   trigger:
     platform: event
