@@ -129,7 +129,14 @@ input_select:
      - Week-End
      - Abscent
 
-
+  pool_pump:
+    name: Pool Pump mode
+    options:
+      - 'Auto'
+      - 'On'
+      - 'Off'
+    initial: 'Auto'
+    icon: mdi:engine
    ############################################################
    ##                      INPUT_BOOLEAN                     ##
    ############################################################
@@ -175,6 +182,9 @@ input_boolean:
     name: Allow devices to join
     initial: off
     icon: mdi:cellphone-wireless
+  swimming_season:
+    name: Swimming Season
+    icon: mdi:swim
     
    ############################################################
    ##                     INPUT_NUMBER                       ##
@@ -197,7 +207,18 @@ input_number:
     max: 15
     step: 1
     icon: mdi:loop
-
+  run_pool_pump_hours_swimming_season:
+    name: Run Pool Pump in Swimming Season
+    min: 1
+    max: 8
+    step: 1
+    mode: slider
+  run_pool_pump_hours_off_season:
+    name: Run Pool Pump in Off Season
+    min: 1
+    max: 6
+    step: 1
+    mode: slider
 
    ############################################################
    ##                       PUSHBULLET                       ##
@@ -264,4 +285,5 @@ timer:
   zigbee_permit_join:
     name: Time remaining
     duration: 600 # Updated this to the number of seconds you wish
-    
+ 
+pool_pump_service:   

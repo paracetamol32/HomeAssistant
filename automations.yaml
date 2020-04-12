@@ -732,3 +732,41 @@
    ##                      Sonette                           ##
    ############################################################ 
 
+   ############################################################
+   ##                      PISCINE                           ##
+   ############################################################ 
+
+- alias: 'Pool Pump On'
+  trigger:
+      - platform: state
+        entity_id: input_select.pool_pump
+        to: 'On'
+  action:
+      service: homeassistant.turn_on
+      entity_id: switch.piscine_pomp
+- alias: 'Pool Pump Off'
+  trigger:
+      - platform: state
+        entity_id: input_select.pool_pump
+        to: 'Off'
+  action:
+      service: homeassistant.turn_off
+      entity_id: switch.piscine_pomp
+- alias: 'Check Pool Pump'
+  trigger:
+      - platform: time_pattern
+        minutes: '/5'
+        seconds: 00
+  condition:
+      condition: and
+      conditions:
+        - condition: sun
+          after: sunrise
+          after_offset: '-1:00:00'
+        - condition: sun
+          before: sunset
+          before_offset: '1:00:00'
+  action:
+      service: pool_pump_service.check
+      data:
+        switch_entity_id: switch.piscine_pomp
