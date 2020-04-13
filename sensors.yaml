@@ -104,15 +104,15 @@
     
 
 
-  - platform: mitemp_bt
-    rounding: True
-    decimals: 2
-    period: 60
-    log_spikes: False
-    use_median: False
-    active_scan: False
-    hci_interface: 0
-    batt_entities: False
+#   - platform: mitemp_bt
+    #rounding: True
+    #decimals: 2
+    # period: 60
+    # log_spikes: False
+    # use_median: False
+    # active_scan: False
+    # hci_interface: 0
+    # batt_entities: False
 
     
   - platform: rflink
@@ -139,7 +139,7 @@
 
   - platform: history_stats
     name: Pool Pump running today
-    entity_id: binary_sensor.pool_pump_running
+    entity_id: switch.piscine_pomp
     state: 'on'
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'

@@ -7,6 +7,10 @@
         name: Pomp
       25:
         name: Polaris
+      22:
+        name: Close Volet
+      23:
+        name: Open Volet
 # Example configuration.yaml entry
 
   - platform: arest

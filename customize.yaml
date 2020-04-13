@@ -24,11 +24,9 @@ cover.volet_cuisine_level:
     pin: true
     off_when_min: false
     report_when_not_changed: false
-    
 cover.portaildom:
   assumed_state: false
   initial_state: closed
-  
 binary_sensor.0b11007c013e320a01000070:
   friendly_name: DIO4BT1
 binary_sensor.0b11007e013e320a02000070:
@@ -39,18 +37,19 @@ binary_sensor.door_window_sensor_158d0002bfc4f8:
   window_room: lola
 binary_sensor.door_window_sensor_158d0002d465c3:
   window_room: chambre
-
-
 person.lola:
-  entity_picture: "/local/lola.png"
+  entity_picture: /local/lola.png
 person.flo:
-  entity_picture: "/local/flo.png"
+  entity_picture: /local/flo.png
 person.dom:
-  entity_picture: "/local/dom.png"
-
+  entity_picture: /local/dom.png
 device_tracker.mi_mix_2:
   consider_home: 180
-  
 device_tracker.redmi_5:
   consider_home: 180
-  
+sensor.arest_sensor_tempair:
+  friendly_name: Temperature Air
+sensor.arest_sensor_temperature_eau:
+  friendly_name: Temperature Eau
+sensor.arest_sensor_uv:
+  friendly_name: UV

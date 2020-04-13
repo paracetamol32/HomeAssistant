@@ -15,8 +15,8 @@ media_player: !include media.yaml
 cover: !include cover.yaml
 
 webhook:
-zigbee2mqtt_networkmap:
-  topic: 'zigbee2mqtt'
+#zigbee2mqtt_networkmap:
+#  topic: 'zigbee2mqtt'
 panel_iframe:
   networkmap:
      title: 'Zigbee Map'
@@ -177,7 +177,6 @@ input_boolean:
     initial: off
   sw_verrou_potail_dom:
     initial: off
-  
   zigbee_permit_join:
     name: Allow devices to join
     initial: off
@@ -185,6 +184,9 @@ input_boolean:
   swimming_season:
     name: Swimming Season
     icon: mdi:swim
+  sw_volet_piscine:
+    name: Controle Volet
+   # icon: mdi:swim
     
    ############################################################
    ##                     INPUT_NUMBER                       ##
@@ -218,6 +220,12 @@ input_number:
     min: 1
     max: 6
     step: 1
+    mode: slider
+  run_polaris_hours:
+    name: Run Polaris Pump
+    min: 10
+    max: 240
+    step: 30
     mode: slider
 
    ############################################################

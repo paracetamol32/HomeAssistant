@@ -736,6 +736,9 @@
    ##                      PISCINE                           ##
    ############################################################ 
 
+
+    ############ Demarrage Pompe ###################
+    
 - alias: 'Pool Pump On'
   trigger:
       - platform: state
@@ -744,6 +747,9 @@
   action:
       service: homeassistant.turn_on
       entity_id: switch.piscine_pomp
+      
+    ############ Arret Pompe ###################
+    
 - alias: 'Pool Pump Off'
   trigger:
       - platform: state
@@ -752,6 +758,8 @@
   action:
       service: homeassistant.turn_off
       entity_id: switch.piscine_pomp
+      
+    ############ Service monitor Pompe ###################      
 - alias: 'Check Pool Pump'
   trigger:
       - platform: time_pattern
@@ -770,3 +778,120 @@
       service: pool_pump_service.check
       data:
         switch_entity_id: switch.piscine_pomp
+        
+    ############ Réglage durée Filtrage ###################         
+
+- alias: Réglage durée Filtrage
+  trigger:
+    platform: state
+    entity_id: switch.piscine_pomp
+    to: 'on'
+    for:
+      minutes: 10
+
+  action:
+
+    - service: input_number.set_value
+      data_template:
+       entity_id: input_number.run_pool_pump_hours_swimming_season
+       value: "4"
+    - condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ states('sensor.arest_sensor_temperature_eau') > 10 }}"
+      - condition: template
+        value_template: "{{ states('sensor.arest_sensor_temperature_eau')  < 12 }}"
+
+    - service: input_number.set_value
+      data_template:
+       entity_id: input_number.run_pool_pump_hours_swimming_season
+       value: "6"
+    - condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ states('sensor.arest_sensor_temperature_eau') > 12 }}"
+      - condition: template
+        value_template: "{{ states('sensor.arest_sensor_temperature_eau')  <16 }}"
+        
+        
+    - service: input_number.set_value
+      data_template:
+       entity_id: input_number.run_pool_pump_hours_swimming_season
+       value: "8"
+    - condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ states('sensor.arest_sensor_temperature_eau') > 16 }}"
+      - condition: template
+        value_template: "{{ states('sensor.arest_sensor_temperature_eau')  < 20 }}"
+
+
+    - service: input_number.set_value
+      data_template:
+       entity_id: input_number.run_pool_pump_hours_swimming_season
+       value: "12"
+    - condition: and
+      conditions:
+      - condition: template
+        value_template: "{{ states('sensor.arest_sensor_temperature_eau') > 24 }}"
+      - condition: template
+        value_template: "{{ states('sensor.arest_sensor_temperature_eau')  < 26 }}"
+    ############ Arret Polaris ###################
+    
+- alias: Turn off polaris 
+  trigger:
+    platform: state
+    entity_id: switch.piscine_polaris
+    to: 'on'
+    for:
+      minutes: "{{ states(input_number.run_polaris_hours)|round(0) }}"
+  action:
+      service: homeassistant.turn_off
+      entity_id: switch.piscine_polaris
+      
+   ############################################################
+   ##                 voletPISCINE                           ##
+   ############################################################ 
+      
+- alias: Contact on Commande ouverture Piscine
+  trigger:
+    platform: state
+    entity_id: input_boolean.sw_volet_piscine
+    to: 'on'
+  action:
+    service: switch.turn_on
+    entity_id: switch.piscine_open_volet
+
+- alias: Contact off Commande ouverture Piscine
+  trigger:
+    platform: state
+    entity_id: input_boolean.sw_volet_piscine
+    to: 'on'
+    for:
+      seconds: 3
+  action:
+    service: switch.turn_off
+    entity_id: switch.piscine_open_volet  
+    
+########### fermeture #################
+
+- alias: Contact off Commande fermeturz Piscine
+  trigger:
+    platform: state
+    entity_id: input_boolean.sw_volet_piscine
+    to: 'off'
+  action:
+    service: switch.turn_on
+    entity_id: switch.piscine_close_volet
+
+- alias: Contact off Commande ouverture Piscine
+  trigger:
+    platform: state
+    entity_id: input_boolean.sw_volet_piscine
+    to: 'off'
+    for:
+      seconds: 190
+  action:
+    service: switch.turn_off
+    entity_id: switch.piscine_close_volet      
+
