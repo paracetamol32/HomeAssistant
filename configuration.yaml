@@ -14,6 +14,14 @@ climate: !include climate.yaml
 media_player: !include media.yaml
 cover: !include cover.yaml
 
+logger:
+  default: error
+  logs:
+    # log level for HA core
+    homeassistant.core: fatal
+    custom_components.pool_pump_service: info
+
+
 webhook:
 #zigbee2mqtt_networkmap:
 #  topic: 'zigbee2mqtt'
@@ -186,7 +194,7 @@ input_boolean:
     icon: mdi:swim
   sw_volet_piscine:
     name: Controle Volet
-   # icon: mdi:swim
+    icon: mdi:inbox-full
     
    ############################################################
    ##                     INPUT_NUMBER                       ##
@@ -215,18 +223,21 @@ input_number:
     max: 8
     step: 1
     mode: slider
+    unit_of_measurement: 'h'
   run_pool_pump_hours_off_season:
     name: Run Pool Pump in Off Season
     min: 1
     max: 6
     step: 1
     mode: slider
+    unit_of_measurement: 'h'
   run_polaris_hours:
     name: Run Polaris Pump
     min: 10
     max: 240
     step: 30
     mode: slider
+    unit_of_measurement: 'Min'
 
    ############################################################
    ##                       PUSHBULLET                       ##
@@ -267,8 +278,8 @@ zwave:
   device_config: !include zwave_device_config.yaml
 
 
-device_tracker:
-  - platform: bluetooth_tracker
+# device_tracker:
+#   - platform: bluetooth_tracker
 
    
 rflink:
@@ -281,9 +292,7 @@ binary_sensor:
   platform: rfxtrx
   automatic_add: false
 
-google:
-  client_id: !secret google_id
-  client_secret: !secret google_secret  
+
 
 python_script:
 

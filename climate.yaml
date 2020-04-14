@@ -41,7 +41,7 @@
   name: Thermostat Chambre
   heater: input_boolean.sw_chambre
   #target_sensor:  sensor.mi_chambre_temperature
-  target_sensor: sensor.mi_t_4c65a8de3abb
+  target_sensor: sensor.temp_mqtt_chambre
   min_temp: 15
   max_temp: 24
   ac_mode: false
@@ -60,7 +60,7 @@
   name: Thermostat Bureau
   heater: climate.bureau
   #target_sensor: sensor.mi_bureau_temperature
-  target_sensor: sensor.mi_t_582d3434930d
+  target_sensor: sensor.temp_mqtt_bureau
   min_temp: 15
   max_temp: 28
   ac_mode: false

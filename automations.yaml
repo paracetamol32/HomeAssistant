@@ -844,7 +844,7 @@
     entity_id: switch.piscine_polaris
     to: 'on'
     for:
-      minutes: "{{ states(input_number.run_polaris_hours)|round(0) }}"
+      minutes: "{{ states('input_number.run_polaris_hours')|round(0) }}"
   action:
       service: homeassistant.turn_off
       entity_id: switch.piscine_polaris

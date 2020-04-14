@@ -81,7 +81,14 @@
   - platform: mqtt
     name: "TEMP MQTT Salon"
     state_topic: "Jeedom/salon_temp" 
+
+  - platform: mqtt
+    name: "TEMP MQTT chambre"
+    state_topic: "Jeedom/chambre_temp"     
     
+  - platform: mqtt
+    name: "TEMP MQTT bureau"
+    state_topic: "Jeedom/bureau_temp"    
     
   - platform: mqtt
     name: "NUT MQTT Lola"
