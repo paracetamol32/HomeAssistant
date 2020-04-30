@@ -1,7 +1,8 @@
 default_config:
 
 recorder:
-  purge_keep_days: 3
+  purge_keep_days: 1
+  db_url: mysql://homeassistant:homeassistant@core-mariadb/homeassistant?charset=utf8
 
 group: !include groups.yaml
 automation: !include automations.yaml
@@ -14,27 +15,24 @@ climate: !include climate.yaml
 media_player: !include media.yaml
 cover: !include cover.yaml
 
-logger:
-  default: error
-  logs:
-    # log level for HA core
-    homeassistant.core: fatal
-    custom_components.pool_pump_service: info
-
+# logger:
+#   default: error
+#   logs:
+#     # log level for HA core
+#     homeassistant.core: fatal
+#     custom_components.pool_pump_service: info
 
 webhook:
 #zigbee2mqtt_networkmap:
 #  topic: 'zigbee2mqtt'
 panel_iframe:
   networkmap:
-     title: 'Zigbee Map'
-     url: '/local/community/zigbee2mqtt_networkmap/map.html'
-     icon: 'mdi:graphql'
+    title: "Zigbee Map"
+    url: "/local/community/zigbee2mqtt_networkmap/map.html"
+    icon: "mdi:graphql"
 
 homeassistant:
   customize: !include customize.yaml
-  
-
 
 frontend:
   themes: !include_dir_merge_named themes/
@@ -45,20 +43,16 @@ panel_custom:
     sidebar_icon: mdi:access-point-network
     url_path: zwave
 
-  
-
 vacuum:
   - platform: miio2
     host: 192.168.32.89
     token: !secret vaccum_token
     name: Mi Robo
 
-
 xiaomi_aqara:
   discovery_retry: 5
   gateways:
     - key: !secret xiaomi_key
-
 
 influxdb:
   host: 192.168.132.20
@@ -66,9 +60,8 @@ influxdb:
   max_retries: 3
   include:
     entities:
-       - sensor.pactempin
-       - sensor.pactempout
-
+      - sensor.pactempin
+      - sensor.pactempout
 
 mqtt:
   broker: 192.168.32.93
@@ -79,23 +72,21 @@ mqtt:
   client_id: home-assistant
   keepalive: 60
   birth_message:
-    topic: 'hass/status'
-    payload: 'online'
+    topic: "hass/status"
+    payload: "online"
   will_message:
-    topic: 'hass/status'
-    payload: 'offline'
+    topic: "hass/status"
+    payload: "offline"
 
-
-
-   ############################################################
-   ##                      INPUT_SELECT                      ##
-   ############################################################
+    ############################################################
+    ##                      INPUT_SELECT                      ##
+    ############################################################
 
 ### Input select pour choisir le son a jouer ###
 input_select:
-  sirenes_gateway:    
+  sirenes_gateway:
     name: Sirènes
-    options: 
+    options:
       - "0 - Police car 1"
       - "1 - Police car 2"
       - "2 - Accident"
@@ -105,17 +96,17 @@ input_select:
       - "6 - Battle"
       - "7 - Air raid"
       - "8 - Bark"
-  #    - "9 - None"
+      #    - "9 - None"
       - "10 - Doorbell"
       - "11 - Knock at a door"
       - "12 - Amuse"
       - "13 - Alarm clock"
-  #    - "14 - None"
-  #    - "15 - None"
-  #    - "16 - None"
-  #    - "17 - None"
-  #    - "18 - None"
-  #    - "19 - None"
+      #    - "14 - None"
+      #    - "15 - None"
+      #    - "16 - None"
+      #    - "17 - None"
+      #    - "18 - None"
+      #    - "19 - None"
       - "20 - MiMix"
       - "21 - Enthusiastic"
       - "22 - GuitarClassic"
@@ -126,28 +117,28 @@ input_select:
       - "27 - MusicBox"
       - "28 - Orange"
       - "29 - Thinker"
-    initial: "1 - Police car 2"    
-    icon: mdi:alarm-bell 
+    initial: "1 - Police car 2"
+    icon: mdi:alarm-bell
   chauffage:
     name: Etats du Chauffage
     icon: mdi:home-minus
     options:
-     - Normal
-     - Diner
-     - Week-End
-     - Abscent
+      - Normal
+      - Diner
+      - Week-End
+      - Abscent
 
   pool_pump:
     name: Pool Pump mode
     options:
-      - 'Auto'
-      - 'On'
-      - 'Off'
-    initial: 'Auto'
+      - "Auto"
+      - "On"
+      - "Off"
+    initial: "Auto"
     icon: mdi:engine
-   ############################################################
-   ##                      INPUT_BOOLEAN                     ##
-   ############################################################
+    ############################################################
+    ##                      INPUT_BOOLEAN                     ##
+    ############################################################
 
 ### Input boolean pour couper le son du gateway ###
 input_boolean:
@@ -162,9 +153,9 @@ input_boolean:
     name: Présence Flo
     initial: off
   presence_dom:
-     name: Présence Dom
-     initial: off
-     icon: mdi:account-switch
+    name: Présence Dom
+    initial: off
+    icon: mdi:account-switch
   thermostats_on_off:
     name: Chauffage On / Off
     initial: off
@@ -195,10 +186,10 @@ input_boolean:
   sw_volet_piscine:
     name: Controle Volet
     icon: mdi:inbox-full
-    
-   ############################################################
-   ##                     INPUT_NUMBER                       ##
-   ############################################################
+
+    ############################################################
+    ##                     INPUT_NUMBER                       ##
+    ############################################################
 
 ### Input slider pour controler le volume du gateway ###
 input_number:
@@ -209,7 +200,7 @@ input_number:
     max: 100
     step: 1
     icon: mdi:volume-high
-### Input slider pour controler le delai de la boucle ###
+  ### Input slider pour controler le delai de la boucle ###
   delai_boucle:
     name: "Délai boucle"
     initial: 1
@@ -223,25 +214,25 @@ input_number:
     max: 8
     step: 1
     mode: slider
-    unit_of_measurement: 'h'
+    unit_of_measurement: "h"
   run_pool_pump_hours_off_season:
     name: Run Pool Pump in Off Season
     min: 1
     max: 6
     step: 1
     mode: slider
-    unit_of_measurement: 'h'
+    unit_of_measurement: "h"
   run_polaris_hours:
     name: Run Polaris Pump
     min: 10
     max: 240
     step: 30
     mode: slider
-    unit_of_measurement: 'Min'
+    unit_of_measurement: "Min"
 
-   ############################################################
-   ##                       PUSHBULLET                       ##
-   ############################################################
+    ############################################################
+    ##                       PUSHBULLET                       ##
+    ############################################################
 
 notify:
   - name: pushbullhome
@@ -251,11 +242,9 @@ notify:
     platform: pushbullet
     api_key: !secret pushbullflo_key
 
-
-
-   ############################################################
-   ##              MANUAL ALARM CONTROL PANEL                ##
-   ############################################################
+    ############################################################
+    ##              MANUAL ALARM CONTROL PANEL                ##
+    ############################################################
 
 alarm_control_panel:
   - platform: manual
@@ -268,20 +257,18 @@ alarm_control_panel:
       trigger_time: 0
     armed_home:
       pending_time: 0
-      delay_time: 0  
+      delay_time: 0
     armed_away:
       pending_time: 0
-      delay_time: 0   
+      delay_time: 0
 
 zwave:
   usb_path: /dev/ttyACM0
   device_config: !include zwave_device_config.yaml
 
-
 # device_tracker:
 #   - platform: bluetooth_tracker
 
-   
 rflink:
   port: /dev/ttyUSB0
 
@@ -292,15 +279,11 @@ binary_sensor:
   platform: rfxtrx
   automatic_add: false
 
-
-
 python_script:
-
-
 
 timer:
   zigbee_permit_join:
     name: Time remaining
     duration: 600 # Updated this to the number of seconds you wish
- 
-pool_pump_service:   
+
+pool_pump_service:
