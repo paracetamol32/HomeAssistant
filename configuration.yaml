@@ -22,6 +22,12 @@ cover: !include cover.yaml
 #     homeassistant.core: fatal
 #     custom_components.pool_pump_service: info
 
+
+history:
+  include:
+    domains:
+      - switch
+
 webhook:
 #zigbee2mqtt_networkmap:
 #  topic: 'zigbee2mqtt'
@@ -48,6 +54,10 @@ vacuum:
     host: 192.168.32.89
     token: !secret vaccum_token
     name: Mi Robo
+
+
+panasonic_viera:
+  host: 192.168.32.95
 
 xiaomi_aqara:
   discovery_retry: 5
