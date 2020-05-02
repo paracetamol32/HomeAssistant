@@ -259,64 +259,178 @@
    ############################################################    
     
     
-- alias: 'On clim Chambre'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.sw_chambre
-  condition:
-    - condition: state
-      entity_id: input_boolean.sw_chambre
-      state: 'on'
-  action:
-    entity_id: climate.chambre
-    service: climate.turn_on
 
-    
-- alias: 'Off clim Chambre'
-  description: ''
+- alias: 'Mode chauffage hvac chambre'
   trigger:
   - platform: state
-    entity_id: input_boolean.sw_chambre
+    entity_id: input_boolean.sw_clim_heater_chambre
+    to: 'on'
+  action:
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.chambre
+        hvac_mode: heat
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.sw_clim_cooler_chambre
+
+
+
+- alias: 'Mode clim hvac chambre'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sw_clim_cooler_chambre
+    to: 'on'
+  action:
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.chambre
+        hvac_mode: cool
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.sw_clim_heater_chambre
+
+- alias: 'Mode off hvac chambre'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sw_clim_heater_chambre
+    to: 'off'
   condition:
     - condition: state
-      entity_id: input_boolean.sw_chambre
+      entity_id: input_boolean.sw_clim_cooler_chambre
       state: 'off'
   action:
     entity_id: climate.chambre
     service: climate.turn_off
-  
 
+- alias: 'Mode off hvac chambre'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sw_clim_cooler_chambre
+    to: 'off'
+  condition:
+    - condition: state
+      entity_id: input_boolean.sw_clim_heater_chambre
+      state: 'off'
+  action:
+    entity_id: climate.chambre
+    service: climate.turn_off
+
+
+   ############################################################
+   ##                 AUTOMATIONS  CLIM BUREAU               ##
+   ############################################################   
+
+
+- alias: 'Mode chauffage hvac bureau'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sw_clim_heater_bureau
+    to: 'on'
+  action:
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.bureau
+        hvac_mode: heat
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.sw_clim_cooler_bureau
+
+
+
+- alias: 'Mode clim hvac bureau'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sw_clim_cooler_bureau
+    to: 'on'
+  action:
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.bureau
+        hvac_mode: cool
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.sw_clim_heater_bureau
+
+- alias: 'Mode off hvac bureau'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sw_clim_heater_bureau
+    to: 'off'
+  condition:
+    - condition: state
+      entity_id: input_boolean.sw_clim_cooler_bureau
+      state: 'off'
+  action:
+    entity_id: climate.bureau
+    service: climate.turn_off
+
+- alias: 'Mode off hvac bureau'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sw_clim_cooler_bureau
+    to: 'off'
+  condition:
+    - condition: state
+      entity_id: input_boolean.sw_clim_heater_bureau
+      state: 'off'
+  action:
+    entity_id: climate.bureau
+    service: climate.turn_off
 
    ############################################################
    ##                 AUTOMATIONS  CLIM LOLA                 ##
    ############################################################   
 
-- alias: 'On clim Lola'
+- alias: 'Mode chauffage hvac lola'
   trigger:
   - platform: state
-    entity_id: input_boolean.sw_lola
-  condition:
-    - condition: state
-      entity_id: input_boolean.sw_lola
-      state: 'on'
+    entity_id: input_boolean.sw_clim_heater_lola
+    to: 'on'
   action:
-    entity_id: climate.lola
-    service: climate.turn_on
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.lola
+        hvac_mode: heat
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.sw_clim_cooler_lola
 
-    
-- alias: 'Off clim Lola'
+
+
+- alias: 'Mode clim hvac lola'
   trigger:
   - platform: state
-    entity_id: input_boolean.sw_lola
+    entity_id: input_boolean.sw_clim_cooler_lola
+    to: 'on'
+  action:
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: climate.lola
+        hvac_mode: cool
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.sw_clim_heater_lola
+
+- alias: 'Mode off hvac lola'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sw_clim_heater_lola
+    to: 'off'
   condition:
     - condition: state
-      entity_id: input_boolean.sw_lola
+      entity_id: input_boolean.sw_clim_cooler_lola
       state: 'off'
   action:
     entity_id: climate.lola
     service: climate.turn_off
 
+- alias: 'Mode off hvac lola'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sw_clim_cooler_lola
+    to: 'off'
+  condition:
+    - condition: state
+      entity_id: input_boolean.sw_clim_heater_lola
+      state: 'off'
+  action:
+    entity_id: climate.lola
+    service: climate.turn_off
 
    ############################################################
    ##               AUTOMATIONS GEOLOC PORTAIL DOM           ##
@@ -461,10 +575,10 @@
 - alias: 'Ouverture Portail Flo DIO'
   trigger:
      platform: state
-     entity_id:  switch.0b110005011187f601010f70
+     entity_id:  switch.telecommande_flo
   condition:
      - condition: state
-       entity_id:  switch.0b110005011187f601010f70
+       entity_id:  switch.telecommande_flo
        state: 'on'
   action:
    - service: script.turn_on
@@ -473,10 +587,10 @@
 - alias: 'Fermeture Portail Flo DIO'
   trigger:
      platform: state
-     entity_id:  switch.0b110005011187f601010f70
+     entity_id:  switch.telecommande_flo
   condition:
      - condition: state
-       entity_id:  switch.0b110005011187f601010f70
+       entity_id:  switch.telecommande_flo
        state: 'off'
   action:
    - service: script.turn_on
@@ -895,3 +1009,19 @@
     service: switch.turn_off
     entity_id: switch.piscine_close_volet      
 
+   ############################################################
+   ##                 CLIM CHAUD FROID                       ##
+   ############################################################ 
+
+- alias: HVAC Heater Control On
+  id: 'hvac_heater_control_on'
+  trigger:
+    - platform: state
+      entity_id: input_boolean.sw_clim_hot_cold
+
+
+  action:
+    - service: climate.set_temperature
+      data_template:
+        entity_id: climate.hvac_heat
+        temperature: '{{ states.sensor.hvac_temperature.state | float + 2 }}'

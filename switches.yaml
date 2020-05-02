@@ -33,3 +33,8 @@
         name: pomp_aqua
 
 
+  - platform: rfxtrx
+    automatic_add: true
+    devices:
+      0b110002011187f601010f60:
+        name: telecommande_flo

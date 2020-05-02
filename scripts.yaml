@@ -63,11 +63,13 @@ eteindre_wall_plug:
   sequence:
     entity_id: switch.fibaro_system_fgwpe_f_wall_plug_gen5_switch
     service: switch.turn_off
+
 eteindre_chauffage_chambre:
   alias: Éteindre Chauffage Chambre
   sequence:
     entity_id: climate.chambre
     service: climate.turn_off
+
 allumer_chauffage_chambre:
   alias: Allumer Chauffage Chambre
   sequence:

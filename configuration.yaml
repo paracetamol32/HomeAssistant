@@ -15,13 +15,14 @@ climate: !include climate.yaml
 media_player: !include media.yaml
 cover: !include cover.yaml
 
-# logger:
-#   default: error
-#   logs:
-#     # log level for HA core
-#     homeassistant.core: fatal
-#     custom_components.pool_pump_service: info
-
+logger:
+   default: error
+   logs:
+     # log level for HA core
+    homeassistant.core: fatal
+    #custom_components.pool_pump_service: info
+    #homeassistant.components.rfxtrx: debug
+    custom_components.dualmode_generic: debug
 
 history:
   include:
@@ -54,10 +55,6 @@ vacuum:
     host: 192.168.32.89
     token: !secret vaccum_token
     name: Mi Robo
-
-
-panasonic_viera:
-  host: 192.168.32.95
 
 xiaomi_aqara:
   discovery_retry: 5
@@ -146,6 +143,34 @@ input_select:
       - "Off"
     initial: "Auto"
     icon: mdi:engine
+
+  sw_clim_mode_lola:
+    name: Clim Mode Lola
+    options:
+      - "Heat"
+      - "Cool"
+      - "Off"
+    initial: "Off"
+    icon: mdi:home-thermometer
+
+  sw_clim_mode_bureau:
+    name: Clim Mode Bureau
+    options:
+      - "Heat"
+      - "Cool"
+      - "Off"
+    initial: "Off"
+    icon: mdi:home-thermometer
+
+
+  sw_clim_mode_chambre:
+    name: Clim Mode Chambre
+    options:
+      - "Heat"
+      - "Cool"
+      - "Off"
+    initial: "Off"
+    icon: mdi:home-thermometer
     ############################################################
     ##                      INPUT_BOOLEAN                     ##
     ############################################################
@@ -193,10 +218,29 @@ input_boolean:
   swimming_season:
     name: Swimming Season
     icon: mdi:swim
+  swimming_cover:
+    name: Ouverture Volet Auto
+    icon: mdi:swim
   sw_volet_piscine:
     name: Controle Volet
-    icon: mdi:inbox-full
+    icon: mdi:swim
+  sw_clim_hot_cold:
+    name: Mode Clim
+    
+  sw_clim_heater_bureau:
+    name: Mode Chauffage Bureau
+  sw_clim_cooler_bureau:
+    name: Mode Clim Bureau
 
+  sw_clim_heater_lola:
+    name: Mode Chauffage Lola
+  sw_clim_cooler_lola:
+    name: Mode Clim Lola
+
+  sw_clim_heater_chambre:
+    name: Mode Chauffage chambre
+  sw_clim_cooler_chambre:
+    name: Mode Clim chambre
     ############################################################
     ##                     INPUT_NUMBER                       ##
     ############################################################
