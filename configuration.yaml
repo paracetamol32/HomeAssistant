@@ -147,29 +147,36 @@ input_select:
   sw_clim_mode_lola:
     name: Clim Mode Lola
     options:
-      - "Heat"
-      - "Cool"
-      - "Off"
-    initial: "Off"
+      - "heat"
+      - "cool"
+      - "off"
+    initial: "off"
     icon: mdi:home-thermometer
 
   sw_clim_mode_bureau:
     name: Clim Mode Bureau
     options:
-      - "Heat"
-      - "Cool"
-      - "Off"
-    initial: "Off"
+      - "heat"
+      - "cool"
+      - "off"
+    initial: "off"
     icon: mdi:home-thermometer
 
+  sw_clim_mode_general:
+    name: Clim Mode General
+    options:
+      - "heat"
+      - "cool"
+    initial: "cool"
+    icon: mdi:home-thermometer
 
   sw_clim_mode_chambre:
     name: Clim Mode Chambre
     options:
-      - "Heat"
-      - "Cool"
-      - "Off"
-    initial: "Off"
+      - "heat"
+      - "cool"
+      - "off"
+    initial: "off"
     icon: mdi:home-thermometer
     ############################################################
     ##                      INPUT_BOOLEAN                     ##
@@ -241,6 +248,10 @@ input_boolean:
     name: Mode Chauffage chambre
   sw_clim_cooler_chambre:
     name: Mode Clim chambre
+
+  sw_summer:
+    name: summer
+    icon: mdi:sunglasses
     ############################################################
     ##                     INPUT_NUMBER                       ##
     ############################################################
@@ -341,3 +352,8 @@ timer:
     duration: 600 # Updated this to the number of seconds you wish
 
 pool_pump_service:
+
+
+shell_command:
+  copy_winter: 'cp /config/appdaemon/backup/schedy_heating_winter.yaml /config/appdaemon/apps/schedy_heating.yaml'
+  copy_summer: 'cp /config/appdaemon/backup/schedy_heating_summer.yaml /config/appdaemon/apps/schedy_heating.yaml'

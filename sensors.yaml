@@ -35,7 +35,6 @@
       field: stats_current_Total_Rain_from_midnight
       database: meteo 
 
-    
   - platform: mqtt
     name: "PACTempOut"
     state_topic: "ESP_PAC/Temp2/TempOut"

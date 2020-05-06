@@ -1,9 +1,16 @@
-schedy_heating:  # This is our app instance name.
+schedy_cooling_summer:  # MODE CLIM.
   module: hass_apps_loader
   class: SchedyApp
 
   actor_type: thermostat
+  actor_templates:
+    # By default, an actor inherits its settings from the "default" template.
+    default:
+      supports_hvac_modes: true
 
+  watched_entities:
+    - input_select.sw_clim_mode_general
+  
   expression_environment: |
     def lola_mode():
         return state("person.lola")
@@ -11,18 +18,29 @@ schedy_heating:  # This is our app instance name.
         return state("binary_sensor.capteur_velux_lola_contact")
     def fenetre_state():
         return state("binary_sensor.capteur_fenetre_chambre_contact")
+    def mode_havc_lola():
+        return state("input_select.sw_clim_mode_lola")
+    def mode_havc_chambre():
+        return state("input_select.sw_clim_mode_chambre")
+    def mode_havc_general():
+        return state("input_select.sw_clim_mode_general")
+
+  schedule_prepend:
+  - x: "Abort() if mode_havc_general() == 'heat' else Next()"
 
   schedule_append:
     - v: "OFF"
   rooms:
 # CHAMBRE LOLA.
     lola:
-      rescheduling_delay: 10
+      rescheduling_delay: 1
       actors:
-        climate.thermostat_lola:
+        climate.thermostat_lola: 
+          hvac_mode_on: cool
       watched_entities:
         - binary_sensor.capteur_velux_lola_contact
         - person.lola
+        - input_select.sw_clim_mode_lola
       schedule:
         - v: 20
           rules:
@@ -31,40 +49,46 @@ schedy_heating:  # This is our app instance name.
             - rules:
               - weekdays: 1-5
                 rules:
-                  - { v: 18, start: "21:00", end: "08:00" }
-                  - { v: 20, start: "08:00", end: "21:00" }
+                - rules:
+                 
+                    - { v: 23, start: "21:00", end: "08:00" }
+                    - { v: 25, start: "08:00", end: "21:00" }
+
               - weekdays: 6-7
                 rules:
-                  - { v: 19, start: "21:00", end: "08:00" }
-                  - { v: 20, start: "08:00", end: "21:00" }
+                - rules:
+
+                  - { v: 23, start: "21:00", end: "08:00" }
+                  - { v: 25, start: "08:00", end: "21:00" }
+
             - v: "OFF"
 # CHAMBRE FLO DOM.
     chambre:
-      rescheduling_delay: 10
+      rescheduling_delay: 1
       actors:
         climate.thermostat_chambre:
+          hvac_mode_on: cool
       watched_entities:
         - binary_sensor.capteur_fenetre_chambre_contact
+        - input_select.sw_clim_mode_chambre
       schedule:
-        - v: 18
+        - v: 20.5
           rules:
           - x: "Break() if is_on('binary_sensor.capteur_fenetre_chambre_contact') else Next()"
           - rules:
             - weekdays: 1-5
               rules:
-                - { start: "21:00", end: "08:00" }
-                - v: 18
+ 
+                - rules:
+
+                  - {v: 23, start: "21:00", end: "08:00" }
             - weekdays: 6-7
               rules:
-                - { start: "21:00", end: "15:00" }
-                - v: 19
+
+                - rules:
+
+                  - {v: 23, start: "21:00", end: "08:00" }
           - v: "OFF"
-# SALON.
-    salon:
-      rescheduling_delay: 10
-      actors:
-        climate.thermostat_salon:
-      schedule:
-        - { v: 21, start: "05:00", end: "02:00", weekdays: 1-7 }
+
 
 

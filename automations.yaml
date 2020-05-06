@@ -314,7 +314,6 @@
     entity_id: climate.chambre
     service: climate.turn_off
 
-
    ############################################################
    ##                 AUTOMATIONS  CLIM BUREAU               ##
    ############################################################   
@@ -1013,15 +1012,20 @@
    ##                 CLIM CHAUD FROID                       ##
    ############################################################ 
 
-- alias: HVAC Heater Control On
-  id: 'hvac_heater_control_on'
+- alias: HVAC Heater Summer
+  id: 'hvac_heater_summer'
   trigger:
     - platform: state
-      entity_id: input_boolean.sw_clim_hot_cold
-
-
+      entity_id: input_select.sw_clim_mode_general
+      to: 'cool'
   action:
-    - service: climate.set_temperature
-      data_template:
-        entity_id: climate.hvac_heat
-        temperature: '{{ states.sensor.hvac_temperature.state | float + 2 }}'
+      service: shell_command.copy_summer
+
+- alias: HVAC Heater Winter
+  id: 'hvac_heater_winter'
+  trigger:
+    - platform: state
+      entity_id: input_select.sw_clim_mode_general
+      to: 'heat'
+  action:
+      service: shell_command.copy_winter
