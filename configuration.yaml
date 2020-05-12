@@ -341,8 +341,26 @@ rfxtrx:
   device: /dev/ttyUSB1
 
 binary_sensor:
-  platform: rfxtrx
-  automatic_add: false
+  - platform: rfxtrx
+    automatic_add: false
+
+  - platform: hikvision
+    host: 192.168.32.10
+    username: admin
+    password: !secret hikvision
+
+camera:
+  # hikvision DS-2CD2032-I front porch
+  - name: cam
+    platform: generic
+    still_image_url: http://192.168.32.10/ISAPI/Streaming/channels/101/picture
+    stream_source: !secret rtspurl
+
+device_tracker:
+  platform: bluetooth_tracker
+  track_new_devices: true
+
+
 
 python_script:
 
@@ -352,6 +370,7 @@ timer:
     duration: 600 # Updated this to the number of seconds you wish
 
 pool_pump_service:
+
 
 
 shell_command:
